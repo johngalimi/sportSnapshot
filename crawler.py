@@ -110,6 +110,8 @@ if __name__ == '__main__':
 
 	leagues = reference_df['league'].unique()
 
+	leagues = ['NBA']
+
 	for league in leagues:
 
 		if league == 'NHL': 
