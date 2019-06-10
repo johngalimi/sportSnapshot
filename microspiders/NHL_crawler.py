@@ -104,7 +104,7 @@ def generate_league_df(league_abbr, target_teams, target_fields, target_seasons)
 
 if __name__ == '__main__':
 
-	reference_file = 'reference.csv'
+	reference_file = 'settings/reference.csv'
 
 	base_season = 2000
 
