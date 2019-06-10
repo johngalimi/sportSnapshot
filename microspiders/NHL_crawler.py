@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 def generate_soup(target_url):
 
 	page = requests.get(target_url)
-
 	good_url = True
 
 	if page.status_code != 404:
@@ -30,7 +29,6 @@ def locate_table_div(soup, table_id):
 def extract_from_td(table_name, attr_name, field_name):
 
 	data = table_name.find_all('td', attrs = {attr_name: field_name})
-
 	data = [i.find_all(text = True)[0] for i in data]
 
 	return data
@@ -41,26 +39,20 @@ def crawl_single_season(urls, target_fields):
 	season_soup, url_status = generate_soup(url)
 
 	if url_status:
-
 		season_df = pd.DataFrame()
 
 		for game_type, table_id in table_ids.items():
-
 			table = locate_table_div(season_soup, table_id)
 
 			# checking for playoff sub table
 			if table is not None:
-
 				df = pd.DataFrame()
 
 				for target_field in target_fields:
-
 					data = extract_from_td(table, data_attr, target_field)
-
 					df[target_field] = data
 
 				df['game_type'] = game_type
-
 				season_df = pd.concat([season_df, df])
 
 		return season_df
@@ -71,13 +63,11 @@ def generate_team_df(team_abbr, target_fields, target_seasons):
 	team_df = pd.DataFrame()
 
 	for target_season in target_seasons:
-
 		print(f'    {target_season}')
 
 		input_url = f'https://www.hockey-reference.com/teams/{team_abbr}/{target_season}_games.html'
 
 		season_df = crawl_single_season(input_url, target_fields)
-
 		team_df = pd.concat([team_df, season_df])
 
 	team_df['team_name'] = team_abbr
@@ -90,11 +80,9 @@ def generate_league_df(league_abbr, target_teams, target_fields, target_seasons)
 	league_df = pd.DataFrame()
 
 	for target_team in target_teams:
-
 		print(f'Crawling {target_team}')
 
 		team_df = generate_team_df(target_team, target_fields, target_seasons)
-
 		league_df = pd.concat([league_df, team_df])
 
 	league_df['league_name'] = league_abbr
@@ -105,10 +93,7 @@ def generate_league_df(league_abbr, target_teams, target_fields, target_seasons)
 if __name__ == '__main__':
 
 	reference_file = 'settings/reference.csv'
-
 	base_season = 2000
-
-	url = 'https://www.hockey-reference.com/teams/BOS/2018_games.html'
 
 	table_ids = {
 	
@@ -129,9 +114,8 @@ if __name__ == '__main__':
 		]
 
 	reference_df = pd.read_csv(reference_file)
-
+	
 	league_name = reference_df['league'].iloc[0] 
-
 	team_list = reference_df['team'].to_list()
 
 	# filter out '04 lockout season and current season (until season complete)
