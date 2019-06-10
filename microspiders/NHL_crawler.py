@@ -95,26 +95,14 @@ if __name__ == '__main__':
 	reference_file = 'settings/reference.csv'
 	base_season = 2000
 
-	table_ids = {
-	
-		'regular': 'all_games'
-		,'playoff': 'all_games_playoffs'
-
-	}
+	table_ids = {'regular': 'all_games', 'playoff': 'all_games_playoffs'}
 
 	data_attr = 'data-stat'
 
-	desired_fields = [
-
-		'date_game'
-		,'opp_name'
-		,'goals'
-		,'opp_goals'
-
-		]
+	desired_fields = ['date_game', 'opp_name', 'goals', 'opp_goals']
 
 	reference_df = pd.read_csv(reference_file)
-	
+
 	league_name = reference_df['league'].iloc[0] 
 	team_list = reference_df['team'].to_list()
 
