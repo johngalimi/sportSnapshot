@@ -34,7 +34,7 @@ def extract_from_td(table_name, attr_name, field_name):
 	return data
 
 
-def crawl_single_season(urls, target_fields):
+def crawl_single_season(url, target_fields):
 
 	season_soup, url_status = generate_soup(url)
 
@@ -58,14 +58,19 @@ def crawl_single_season(urls, target_fields):
 		return season_df
 
 
-def generate_team_df(team_abbr, target_fields, target_seasons):
+def generate_team_df(league_abbr, team_abbr, target_fields, target_seasons):
+
+	if league_abbr == 'NHL': 
+		sitename = 'hockey'
+	elif league_abbr == 'NBA':
+		sitename = 'basketball'
 
 	team_df = pd.DataFrame()
 
 	for target_season in target_seasons:
 		print(f'    {target_season}')
 
-		input_url = f'https://www.hockey-reference.com/teams/{team_abbr}/{target_season}_games.html'
+		input_url = f'https://www.{sitename}-reference.com/teams/{team_abbr}/{target_season}_games.html'
 
 		season_df = crawl_single_season(input_url, target_fields)
 		team_df = pd.concat([team_df, season_df])
@@ -82,7 +87,7 @@ def generate_league_df(league_abbr, target_teams, target_fields, target_seasons)
 	for target_team in target_teams:
 		print(f'Crawling {target_team}')
 
-		team_df = generate_team_df(target_team, target_fields, target_seasons)
+		team_df = generate_team_df(league_abbr, target_team, target_fields, target_seasons)
 		league_df = pd.concat([league_df, team_df])
 
 	league_df['league_name'] = league_abbr
@@ -93,29 +98,33 @@ def generate_league_df(league_abbr, target_teams, target_fields, target_seasons)
 if __name__ == '__main__':
 
 	reference_file = 'settings/reference.csv'
-	base_season = 2000
 
 	table_ids = {'regular': 'all_games', 'playoff': 'all_games_playoffs'}
-
 	data_attr = 'data-stat'
-
-	desired_fields = ['date_game', 'opp_name', 'goals', 'opp_goals']
+	desired_fields = ['date_game', 'opp_name']
+	
+	base_season = 2000
+	season_range = list(range(base_season, datetime.datetime.now().year))
 
 	reference_df = pd.read_csv(reference_file)
 
-	league_name = reference_df['league'].iloc[0] 
-	team_list = reference_df['team'].to_list()
+	leagues = reference_df['league'].unique()
 
-	# filter out '04 lockout season and current season (until season complete)
-	season_range = list(range(base_season, datetime.datetime.now().year + 1))
-	season_range = [season for season in season_range if season not in [2005, 2019]]
+	for league in leagues:
 
-	team_list = ['BOS', 'WSH', 'TBL']
+		if league == 'NHL': 
+			desired_fields += ['goals', 'opp_goals']
+			season_range = [season for season in season_range if season != 2005]
 
-	df = generate_league_df(league_name, team_list, desired_fields, season_range)
+		elif league == 'NBA':
+			desired_fields += ['pts', 'opp_pts']
 
-	print(df.head())
-	print(df.info())
+		team_list = (reference_df[reference_df['league'] == league])['team'].to_list()
+
+		df = generate_league_df(league, team_list, desired_fields, season_range)
+
+		print(df.head())
+		print(df.info())
 
 	
 
