@@ -2,6 +2,9 @@ import datetime
 import pandas as pd
 from crawler import generate_league_df
 
+pd.set_option('display.max_rows', 100)
+pd.set_option('display.max_columns', 20)
+
 
 def main():
 
@@ -9,6 +12,22 @@ def main():
 
 	table_ids = {'regular': 'all_games', 'playoff': 'all_games_playoffs'}
 	data_attr = 'data-stat'
+
+	final_columns = {
+
+		'date_game': 'game_date'
+		,'team_name': 'team'
+		,'opp_name': 'opponent'
+		,'league_name': 'league'
+		,'game_type': 'type'
+		,'goals': 'team_pts'
+		,'opp_goals': 'oppt_pts'
+		,'pts': 'team_pts'
+		,'opp_pts': 'oppt_pts' 
+
+		}
+
+	reordered_columns = ['league', 'game_date', 'type', 'team', 'opponent', 'team_pts', 'oppt_pts']
 	
 	base_season = 2000
 	season_range = list(range(base_season, datetime.datetime.now().year + 1))
@@ -34,6 +53,13 @@ def main():
 		# TODO - standardize column names
 
 		df = generate_league_df(league, team_list, desired_fields, season_range, table_ids, data_attr)
+
+		df.rename(columns = final_columns, inplace = True)
+		print(df.head())
+		df = df[reordered_columns]
+
+		print(df.head())
+		print(df.info())
 
 		df.to_csv(f'testing/{league}.csv', index=False)
 

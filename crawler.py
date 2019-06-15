@@ -4,9 +4,6 @@ import requests
 import datetime
 from bs4 import BeautifulSoup
 
-pd.set_option('display.max_rows', 100)
-pd.set_option('display.max_columns', 20)
-
 
 def generate_soup(target_url):
 
@@ -104,9 +101,6 @@ def generate_league_df(league_abbr, target_teams, target_fields, target_seasons,
 		league_df = pd.concat([league_df, team_df])
 
 	league_df['league_name'] = league_abbr
-
-	print(league_df.head())
-	print(league_df.info())
 
 	return league_df
 
