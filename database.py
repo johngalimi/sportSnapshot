@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 
+# put mongo cmd  executable here
 
 def insert_into_db(documents):
 

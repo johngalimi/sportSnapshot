@@ -1,6 +1,6 @@
 import datetime
 import pandas as pd
-from crawler import generate_league_df
+from crawler import generate_league_df, prepare_league_data
 
 pd.set_option('display.max_rows', 100)
 pd.set_option('display.max_columns', 20)
@@ -50,18 +50,14 @@ def main():
 		team_list = (reference_df[reference_df['league'] == league])['team'].to_list()
 		team_list = team_list[0:1]
 
-		# TODO - standardize column names
-
 		df = generate_league_df(league, team_list, desired_fields, season_range, table_ids, data_attr)
 
-		df.rename(columns = final_columns, inplace = True)
-		print(df.head())
-		df = df[reordered_columns]
+		prepared_df = prepare_league_data(df, final_columns, reordered_columns)
 
-		print(df.head())
-		print(df.info())
+		print(prepared_df.head())
+		print(prepared_df.info())
 
-		df.to_csv(f'testing/{league}.csv', index=False)
+		prepared_df.to_csv(f'testing/{league}.csv', index=False)
 
 
 if __name__ == '__main__':

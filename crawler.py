@@ -104,3 +104,14 @@ def generate_league_df(league_abbr, target_teams, target_fields, target_seasons,
 
 	return league_df
 
+
+def prepare_league_data(df, name_mapping, final_ordering):
+
+	df.rename(columns = name_mapping, inplace = True)
+
+	df = df[final_ordering]
+
+	# transform df to json (orient='records')
+
+	return df
+
