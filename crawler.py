@@ -137,6 +137,7 @@ if __name__ == '__main__':
 			desired_fields += ['pts', 'opp_pts']
 
 		team_list = (reference_df[reference_df['league'] == league])['team'].to_list()
+		team_list = team_list[0:3]
 
 		df = generate_league_df(league, team_list, desired_fields, season_range)
 
