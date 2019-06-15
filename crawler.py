@@ -105,6 +105,9 @@ def generate_league_df(league_abbr, target_teams, target_fields, target_seasons)
 
 	league_df['league_name'] = league_abbr
 
+	print(league_df.head())
+	print(league_df.info())
+
 	return league_df
 
 
@@ -114,17 +117,17 @@ if __name__ == '__main__':
 
 	table_ids = {'regular': 'all_games', 'playoff': 'all_games_playoffs'}
 	data_attr = 'data-stat'
-	desired_fields = ['date_game', 'opp_name']
 	
 	base_season = 2000
 	season_range = list(range(base_season, datetime.datetime.now().year + 1))
 
 	reference_df = pd.read_csv(reference_file)
 
-	# leagues = reference_df['league'].unique()
-	leagues = ['NBA', 'NHL']
+	leagues = reference_df['league'].unique()
 
 	for league in leagues:
+
+		desired_fields = ['date_game', 'opp_name']
 
 		if league == 'NHL': 
 			desired_fields += ['goals', 'opp_goals']
@@ -137,8 +140,5 @@ if __name__ == '__main__':
 
 		df = generate_league_df(league, team_list, desired_fields, season_range)
 
-		print(df.head())
-		print(df.info())
-
-	
+		df.to_csv(f'testing/{league}.csv', index=False)
 
