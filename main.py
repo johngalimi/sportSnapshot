@@ -1,6 +1,8 @@
 import datetime
 import pandas as pd
+
 from crawler import generate_league_df, prepare_league_data
+from database import insert_into_db, clear_out_db
 
 pd.set_option('display.max_rows', 100)
 pd.set_option('display.max_columns', 20)
@@ -27,7 +29,7 @@ def main():
 
 		}
 
-	reordered_columns = ['league', 'game_date', 'type', 'team', 'opponent', 'team_pts', 'oppt_pts']
+	reordered_columns = ['league', 'type', 'game_date', 'team', 'opponent', 'team_pts', 'oppt_pts']
 	
 	base_season = 2000
 	season_range = list(range(base_season, datetime.datetime.now().year + 1))
@@ -48,17 +50,16 @@ def main():
 			desired_fields += ['pts', 'opp_pts']
 
 		team_list = (reference_df[reference_df['league'] == league])['team'].to_list()
-		team_list = team_list[0:1]
+		
+		team_list = team_list
 
 		df = generate_league_df(league, team_list, desired_fields, season_range, table_ids, data_attr)
 
-		prepared_df = prepare_league_data(df, final_columns, reordered_columns)
+		prepared_data = prepare_league_data(df, final_columns, reordered_columns)
 
-		print(prepared_df.head())
-		print(prepared_df.info())
-
-		prepared_df.to_csv(f'testing/{league}.csv', index=False)
+		insert_into_db(prepared_data)
 
 
 if __name__ == '__main__':
+	
 	main()

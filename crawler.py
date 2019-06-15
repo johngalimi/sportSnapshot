@@ -111,7 +111,7 @@ def prepare_league_data(df, name_mapping, final_ordering):
 
 	df = df[final_ordering]
 
-	# transform df to json (orient='records')
+	df_dict = df.to_dict(orient = 'records')
 
-	return df
+	return df_dict
 

@@ -1,14 +1,23 @@
 from pymongo import MongoClient
 
-# put mongo cmd  executable here
+# mongo cmd executable here
+# "C:\Program Files\MongoDB\Server\4.0\bin\mongo.exe"
 
-def insert_into_db(documents):
+
+def connect_mongo():
 
 	client = MongoClient('mongodb://localhost:27017')
 
 	db = client.sportSnapshot
 
 	games = db.games
+
+	return games
+
+
+def insert_into_db(documents):
+
+	games = connect_mongo()
 
 	results = games.insert_many(documents)
 
@@ -18,6 +27,8 @@ def insert_into_db(documents):
 
 
 def clear_out_db():
+
+	games = connect_mongo()
 
 	x = games.delete_many({})
 
