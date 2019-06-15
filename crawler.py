@@ -1,7 +1,11 @@
 import pandas as pd
+import numpy as np
 import requests
 import datetime
 from bs4 import BeautifulSoup
+
+pd.set_option('display.max_rows', 100)
+pd.set_option('display.max_columns', 20)
 
 
 def generate_soup(target_url):
@@ -29,9 +33,17 @@ def locate_table_div(soup, table_id):
 def extract_from_td(table_name, attr_name, field_name):
 
 	data = table_name.find_all('td', attrs = {attr_name: field_name})
-	data = [i.find_all(text = True)[0] for i in data]
 
-	return data
+	new_data = []
+	for record in data:
+		item = record.find_all(text = True)
+
+		if len(item) == 0: value = np.nan
+		else: value = item[0]
+
+		new_data.append(value)
+
+	return new_data
 
 
 def crawl_single_season(url, target_fields):
@@ -50,6 +62,7 @@ def crawl_single_season(url, target_fields):
 
 				for target_field in target_fields:
 					data = extract_from_td(table, data_attr, target_field)
+
 					df[target_field] = data
 
 				df['game_type'] = game_type
@@ -104,13 +117,12 @@ if __name__ == '__main__':
 	desired_fields = ['date_game', 'opp_name']
 	
 	base_season = 2000
-	season_range = list(range(base_season, datetime.datetime.now().year))
+	season_range = list(range(base_season, datetime.datetime.now().year + 1))
 
 	reference_df = pd.read_csv(reference_file)
 
-	leagues = reference_df['league'].unique()
-
-	leagues = ['NBA']
+	# leagues = reference_df['league'].unique()
+	leagues = ['NBA', 'NHL']
 
 	for league in leagues:
 
