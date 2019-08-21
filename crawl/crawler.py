@@ -113,7 +113,6 @@ def prepare_league_data(df, league, name_mapping, final_ordering, team_name_col_
 	df = pd.merge(df, team_name_col_map, on = ['team'], how = 'inner')
 	df['team'] = df['full_name']
 
-	# TODO - get rid of timestamps and just leave date
 	if league == 'NHL':
 		df['game_date'] = df['game_date'].apply(lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'))
 
@@ -135,8 +134,14 @@ def prepare_league_data(df, league, name_mapping, final_ordering, team_name_col_
 
 	df = df[final_ordering]
 
-	print(df.head())
-	print(df.info())
+	df['game_id'] = (
+
+		df['game_year'].astype(str) + df['game_month'].astype(str) + df['game_day'].astype(str) + 
+		df['team'].astype(str) + df['opponent'].astype(str) + df['team_pts'].astype(str) + df['oppt_pts'].astype(str)
+
+		)
+
+	df['game_id'] = df['game_id'].apply(lambda x: ''.join(sorted(x.replace(' ', '').upper())))
 
 	df_dict = df.to_dict(orient = 'records')
 

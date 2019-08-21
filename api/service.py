@@ -52,6 +52,4 @@ def retrieve_games():
 
 if __name__ == '__main__':
 
-	# get_games('sportSnapshot', 'games', 1999, 10, 2)
-
 	app.run(debug = True)
