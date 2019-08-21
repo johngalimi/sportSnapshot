@@ -10,7 +10,7 @@ pd.set_option('display.max_columns', 20)
 
 def main():
 
-	reference_file = 'settings/referencetest.csv'
+	reference_file = 'settings/reference.csv'
 
 	table_ids = {'regular': 'all_games', 'playoff': 'all_games_playoffs'}
 	table_ids = {0: 'all_games', 1: 'all_games_playoffs'}
