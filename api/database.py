@@ -3,7 +3,7 @@ from pymongo import MongoClient
 # mongo cmd executable here
 # "C:\Program Files\MongoDB\Server\4.0\bin\mongo.exe"
 
-# should centralize all database operations in one folder
+# should centralize all database operations in one folder (crawl / api agnostic)
 
 
 def connect_mongo(collection_name, database_name):
@@ -17,13 +17,6 @@ def connect_mongo(collection_name, database_name):
 	database = collection[database_name]
 
 	return client, database
-
-
-# def query_mongo(database):
-
-# 	print('---->> Querying Mongo')
-
-# 	return None
 
 
 def close_mongo(client):
