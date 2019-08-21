@@ -1,18 +1,22 @@
-import flask
+from flask import Flask, request, jsonify
 
 import database as db
 
+app = Flask(__name__)
 
-def get_games(collection_name, database_name, selected_year, selected_month, selected_day):
+
+def get_games(collection_name, database_name, date_dict):
+
+	# need to address duplicate game records (NJD vs NYR 5/25/12)
 
 	games_client, games_database = db.connect_mongo(collection_name, database_name)
 
 	games = games_database.find(
 
 			{
-				'game_year': selected_year,
-				'game_month': selected_month,
-				'game_day': selected_day,
+				'game_year': date_dict['year'],
+				'game_month': date_dict['month'],
+				'game_day': date_dict['day'],
 			},
 
 			{
@@ -32,6 +36,22 @@ def get_games(collection_name, database_name, selected_year, selected_month, sel
 	game_array = [game for game in games]
 
 	return game_array
-	
 
-get_games('sportSnapshot', 'games', 1999, 10, 2)
+
+@app.route('/games/', methods = ['GET'])
+def retrieve_games():
+
+	selected_date = request.args.to_dict()
+
+	formatted_date = {k: int(v) for k, v in selected_date.items()}
+
+	selected_games = get_games('sportSnapshot', 'games', formatted_date)
+
+	return jsonify(selected_games)
+
+
+if __name__ == '__main__':
+
+	# get_games('sportSnapshot', 'games', 1999, 10, 2)
+
+	app.run(debug = True)
