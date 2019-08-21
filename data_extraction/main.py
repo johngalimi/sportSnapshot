@@ -13,15 +13,16 @@ def main():
 	reference_file = 'settings/referencetest.csv'
 
 	table_ids = {'regular': 'all_games', 'playoff': 'all_games_playoffs'}
+	table_ids = {0: 'all_games', 1: 'all_games_playoffs'}
 	data_attr = 'data-stat'
 
 	final_columns = {
 
 		'date_game': 'game_date'
+		,'league_name': 'league'
+		,'game_type': 'is_playoff'
 		,'team_name': 'team'
 		,'opp_name': 'opponent'
-		,'league_name': 'league'
-		,'game_type': 'type'
 		,'goals': 'team_pts'
 		,'opp_goals': 'oppt_pts'
 		,'pts': 'team_pts'
@@ -29,7 +30,7 @@ def main():
 
 		}
 
-	reordered_columns = ['league', 'type', 'game_date', 'team', 'opponent', 'team_pts', 'oppt_pts']
+	reordered_columns = ['game_date', 'league', 'is_playoff', 'team', 'opponent', 'team_pts', 'oppt_pts']
 	
 	base_season = 2000
 	season_range = list(range(base_season, datetime.datetime.now().year + 1))

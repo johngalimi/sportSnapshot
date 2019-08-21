@@ -3,6 +3,8 @@ from pymongo import MongoClient
 # mongo cmd executable here
 # "C:\Program Files\MongoDB\Server\4.0\bin\mongo.exe"
 
+# add parameterized database names to extend this across projects
+
 
 def connect_mongo():
 
