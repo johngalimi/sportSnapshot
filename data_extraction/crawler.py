@@ -113,6 +113,7 @@ def prepare_league_data(df, league, name_mapping, final_ordering, team_name_col_
 	df = pd.merge(df, team_name_col_map, on = ['team'], how = 'inner')
 	df['team'] = df['full_name']
 
+	# TODO - get rid of timestamps and just leave date
 	if league == 'NHL':
 		df['game_date'] = df['game_date'].apply(lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'))
 
@@ -126,7 +127,7 @@ def prepare_league_data(df, league, name_mapping, final_ordering, team_name_col_
 	numeric_flds = ['team_pts', 'oppt_pts']
 
 	for numeric_fld in numeric_flds:
-		df[numeric_fld] = df[numeric_fld].astype(np.int64)
+		df[numeric_fld] = df[numeric_fld].fillna(0).astype(np.int64)
 
 	df = df[final_ordering]
 
