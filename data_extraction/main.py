@@ -60,7 +60,7 @@ def main():
 
 		name_mapping = reference_df[reference_df['league'] == league][['team', 'full_name']]
 
-		prepared_data = prepare_league_data(df, final_columns, reordered_columns, name_mapping)
+		prepared_data = prepare_league_data(df, league, final_columns, reordered_columns, name_mapping)
 
 		insert_into_db(prepared_data)
 

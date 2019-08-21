@@ -106,14 +106,25 @@ def generate_league_df(league_abbr, target_teams, target_fields, target_seasons,
 	return league_df
 
 
-def prepare_league_data(df, name_mapping, final_ordering, team_name_col_map):
+def prepare_league_data(df, league, name_mapping, final_ordering, team_name_col_map):
 
 	df.rename(columns = name_mapping, inplace = True)
 
 	df = pd.merge(df, team_name_col_map, on = ['team'], how = 'inner')
 	df['team'] = df['full_name']
 
+	if league == 'NHL':
+		df['game_date'] = df['game_date'].apply(lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'))
+
+	# Scraped dates look like Tues, Nov 2, 1999
+	elif league == 'NBA':
+		df['game_date'] = df['game_date'].apply(lambda d: ' '.join(d.split(' ')[1:]))
+		df['game_date'] = df['game_date'].apply(lambda d: datetime.datetime.strptime(d, '%b %d, %Y'))
+
 	df = df[final_ordering]
+
+	print(df.head())
+	print(df.info())
 
 	df_dict = df.to_dict(orient = 'records')
 
