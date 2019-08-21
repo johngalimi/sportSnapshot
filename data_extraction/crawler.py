@@ -122,6 +122,10 @@ def prepare_league_data(df, league, name_mapping, final_ordering, team_name_col_
 		df['game_date'] = df['game_date'].apply(lambda d: ' '.join(d.split(' ')[1:]))
 		df['game_date'] = df['game_date'].apply(lambda d: datetime.datetime.strptime(d, '%b %d, %Y'))
 
+	df['game_year'] = df['game_date'].apply(lambda d: d.year)
+	df['game_month'] = df['game_date'].apply(lambda d: d.month)
+	df['game_day'] = df['game_date'].apply(lambda d: d.day)
+
 	df['is_playoff'] = df['is_playoff'].astype('bool')
 
 	numeric_flds = ['team_pts', 'oppt_pts']
@@ -130,6 +134,9 @@ def prepare_league_data(df, league, name_mapping, final_ordering, team_name_col_
 		df[numeric_fld] = df[numeric_fld].fillna(0).astype(np.int64)
 
 	df = df[final_ordering]
+
+	print(df.head())
+	print(df.info())
 
 	df_dict = df.to_dict(orient = 'records')
 

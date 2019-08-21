@@ -30,7 +30,7 @@ def main():
 
 		}
 
-	reordered_columns = ['game_date', 'league', 'is_playoff', 'team', 'opponent', 'team_pts', 'oppt_pts']
+	reordered_columns = ['game_year', 'game_month', 'game_day', 'league', 'is_playoff', 'team', 'opponent', 'team_pts', 'oppt_pts']
 	
 	base_season = 2000
 	season_range = list(range(base_season, datetime.datetime.now().year + 1))
