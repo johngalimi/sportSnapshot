@@ -4,9 +4,6 @@ import pandas as pd
 import database as db
 import crawler as cr
 
-# from crawler import generate_league_df, prepare_league_data
-# from database import insert_into_db, clear_out_db
-
 pd.set_option('display.max_columns', 20)
 
 
