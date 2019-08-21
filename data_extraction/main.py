@@ -34,6 +34,8 @@ def main():
 	base_season = 2000
 	season_range = list(range(base_season, datetime.datetime.now().year + 1))
 
+	clear_out_db()
+
 	reference_df = pd.read_csv(reference_file)
 
 	leagues = reference_df['league'].unique()
