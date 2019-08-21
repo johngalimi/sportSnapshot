@@ -121,6 +121,11 @@ def prepare_league_data(df, league, name_mapping, final_ordering, team_name_col_
 		df['game_date'] = df['game_date'].apply(lambda d: ' '.join(d.split(' ')[1:]))
 		df['game_date'] = df['game_date'].apply(lambda d: datetime.datetime.strptime(d, '%b %d, %Y'))
 
+	numeric_flds = ['team_pts', 'oppt_pts']
+
+	for numeric_fld in numeric_flds:
+		df[numeric_fld] = df[numeric_fld].astype(np.int64)
+
 	df = df[final_ordering]
 
 	print(df.head())
