@@ -1,62 +1,62 @@
-team,league
-TBL,NHL
-BOS,NHL
-TOR,NHL
-MTL,NHL
-FLA,NHL
-BUF,NHL
-DET,NHL
-OTT,NHL
-WSH,NHL
-NYI,NHL
-PIT,NHL
-CAR,NHL
-CBJ,NHL
-PHI,NHL
-NYR,NHL
-NJD,NHL
-NSH,NHL
-WPG,NHL
-STL,NHL
-DAL,NHL
-COL,NHL
-CHI,NHL
-MIN,NHL
-CGY,NHL
-SJS,NHL
-VEG,NHL
-ARI,NHL
-VAN,NHL
-ANA,NHL
-EDM,NHL
-LAK,NHL
-MIL,NBA
-TOR,NBA
-PHI,NBA
-BOS,NBA
-IND,NBA
-BRK,NBA
-ORL,NBA
-DET,NBA
-CHO,NBA
-MIA,NBA
-WAS,NBA
-ATL,NBA
-CHI,NBA
-CLE,NBA
-NYK,NBA
-GSW,NBA
-DEN,NBA
-POR,NBA
-HOU,NBA
-UTA,NBA
-OKC,NBA
-SAS,NBA
-LAC,NBA
-SAC,NBA
-LAL,NBA
-MIN,NBA
-MEM,NBA
-NOP,NBA
-DAL,NBA
-PHO,NBA
+team,league,full_name
+TBL,NHL,Tampa Bay Lightning
+BOS,NHL,Boston Bruins
+TOR,NHL,Toronto Maple Leafs
+MTL,NHL,Montreal Canadiens
+FLA,NHL,Florida Panthers
+BUF,NHL,Buffalo Sabres
+DET,NHL,Detroit Red Wings
+OTT,NHL,Ottawa Senators
+WSH,NHL,Washington Capitals
+NYI,NHL,New York Islanders
+PIT,NHL,Pittsburgh Penguins
+CAR,NHL,Carolina Panthers
+CBJ,NHL,Columbus Blue Jackets
+PHI,NHL,Philadelphia Flyers
+NYR,NHL,New York Rangers
+NJD,NHL,New Jersey Devils
+NSH,NHL,Nashville Predators
+WPG,NHL,Winnipeg Jets
+STL,NHL,St. Louis Blues
+DAL,NHL,Dallas Stars
+COL,NHL,Colorado Avalanche
+CHI,NHL,Chicago Blackhawks
+MIN,NHL,Minnesota Wild
+CGY,NHL,Calgary Flames
+SJS,NHL,San Jose Sharks
+VEG,NHL,Vegas Golden Knights
+ARI,NHL,Arizona Coyotes
+VAN,NHL,Vancouver Canucks
+ANA,NHL,Anaheim Ducks
+EDM,NHL,Edmonton Oilers
+LAK,NHL,Los Angeles Kings
+MIL,NBA,Milwaukee Bucks
+TOR,NBA,Toronto Raptors
+PHI,NBA,Philadelphia 76ers
+BOS,NBA,Boston Celtics
+IND,NBA,Indiana Pacers
+BRK,NBA,Brooklyn Nets
+ORL,NBA,Orlando Magic
+DET,NBA,Detroit Red Wings
+CHO,NBA,Charlotte Hornets
+MIA,NBA,Miami Heat
+WAS,NBA,Washington Wizards
+ATL,NBA,Atlanta Hawks
+CHI,NBA,Chicago Bulls
+CLE,NBA,Cleveland Cavaliers
+NYK,NBA,New York Knicks
+GSW,NBA,Golden State Warriors
+DEN,NBA,Denver Nuggets
+POR,NBA,Portland Trailblazers
+HOU,NBA,Houston Rockets
+UTA,NBA,Utah Jazz
+OKC,NBA,Oklahoma City Thunder
+SAS,NBA,San Antonio Spurs
+LAC,NBA,Los Angeles Clippers
+SAC,NBA,Sacramento Kings
+LAL,NBA,Los Angeles Lakers
+MIN,NBA,Minnesota Timberwolves
+MEM,NBA,Memphis Grizzlies
+NOP,NBA,New Orleans Pelicans
+DAL,NBA,Dallas Mavericks
+PHO,NBA,Phoenix Suns

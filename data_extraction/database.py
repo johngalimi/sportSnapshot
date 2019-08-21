@@ -21,9 +21,12 @@ def insert_into_db(documents):
 
 	results = games.insert_many(documents)
 
-	for object_id in results.inserted_ids:
+	add_count = 0
 
-		print(f'Game Added, Game ID = {object_id}')
+	for object_id in results.inserted_ids:
+		add_count += 1
+
+	print(f'----{add_count} documents added')
 
 
 def clear_out_db():
@@ -32,5 +35,4 @@ def clear_out_db():
 
 	x = games.delete_many({})
 
-	print(x.deleted_count, " documents deleted.")
-
+	print(f'----{x.deleted_count} documents deleted')

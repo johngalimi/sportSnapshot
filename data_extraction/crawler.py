@@ -85,6 +85,7 @@ def generate_team_df(league_abbr, team_abbr, target_fields, target_seasons, tabl
 		season_df = crawl_single_season(input_url, target_fields, table_ids, data_attr)
 		team_df = pd.concat([team_df, season_df])
 
+	# in h1 span w/ itemprop = 'name' to grab actual name of team in that season (see ANA)
 	team_df['team_name'] = team_abbr
 
 	return team_df
@@ -105,13 +106,15 @@ def generate_league_df(league_abbr, target_teams, target_fields, target_seasons,
 	return league_df
 
 
-def prepare_league_data(df, name_mapping, final_ordering):
+def prepare_league_data(df, name_mapping, final_ordering, team_name_col_map):
 
 	df.rename(columns = name_mapping, inplace = True)
+
+	df = pd.merge(df, team_name_col_map, on = ['team'], how = 'inner')
+	df['team'] = df['full_name']
 
 	df = df[final_ordering]
 
 	df_dict = df.to_dict(orient = 'records')
 
 	return df_dict
-

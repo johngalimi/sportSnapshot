@@ -10,7 +10,7 @@ pd.set_option('display.max_columns', 20)
 
 def main():
 
-	reference_file = 'settings/reference.csv'
+	reference_file = 'settings/referencetest.csv'
 
 	table_ids = {'regular': 'all_games', 'playoff': 'all_games_playoffs'}
 	data_attr = 'data-stat'
@@ -46,18 +46,21 @@ def main():
 
 		if league == 'NHL': 
 			desired_fields += ['goals', 'opp_goals']
-			season_range = [season for season in season_range if season != 2005]
+
+			# excluding 2005 season b/c of NHL lockout
+			desired_seasons = [season for season in season_range if season != 2005]
 
 		elif league == 'NBA':
 			desired_fields += ['pts', 'opp_pts']
+			desired_seasons = season_range
 
 		team_list = (reference_df[reference_df['league'] == league])['team'].to_list()
-		
-		team_list = team_list
 
-		df = generate_league_df(league, team_list, desired_fields, season_range, table_ids, data_attr)
+		df = generate_league_df(league, team_list, desired_fields, desired_seasons, table_ids, data_attr)
 
-		prepared_data = prepare_league_data(df, final_columns, reordered_columns)
+		name_mapping = reference_df[reference_df['league'] == league][['team', 'full_name']]
+
+		prepared_data = prepare_league_data(df, final_columns, reordered_columns, name_mapping)
 
 		insert_into_db(prepared_data)
 
