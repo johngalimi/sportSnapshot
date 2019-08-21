@@ -3,38 +3,47 @@ from pymongo import MongoClient
 # mongo cmd executable here
 # "C:\Program Files\MongoDB\Server\4.0\bin\mongo.exe"
 
-# add parameterized database names to extend this across projects
 
+def connect_mongo(collection_name, database_name):
 
-def connect_mongo():
+	print('---->> Connecting to Mongo')
 
 	client = MongoClient('mongodb://localhost:27017')
 
-	db = client.sportSnapshot
+	collection = client[collection_name]
 
-	games = db.games
+	database = collection[database_name]
 
-	return games
+	return client, database
 
 
-def insert_into_db(documents):
+def insert_into_db(database, documents):
 
-	games = connect_mongo()
+	print('---->> Inserting into Mongo')
 
-	results = games.insert_many(documents)
+	results = database.insert_many(documents)
 
 	add_count = 0
 
 	for object_id in results.inserted_ids:
 		add_count += 1
 
-	print(f'----{add_count} documents added')
+	print(f'--> {add_count} documents added')
 
 
-def clear_out_db():
+def clear_out_db(database):
 
-	games = connect_mongo()
+	'---->> Deleting from Mongo'
 
-	x = games.delete_many({})
+	x = database.delete_many({})
 
-	print(f'----{x.deleted_count} documents deleted')
+	print(f'--> {x.deleted_count} documents deleted')
+
+
+def close_mongo(client):
+
+	print('---->> Closing Mongo')
+
+	client.close()
+
+
