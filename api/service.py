@@ -26,6 +26,7 @@ def get_games(collection_name, database_name, date_dict):
 				'opponent': 1,
 				'team_pts': 1,
 				'oppt_pts': 1,
+				'game_id': 1,
 				'_id': 0,
 			}
 
