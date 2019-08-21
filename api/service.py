@@ -7,8 +7,6 @@ app = Flask(__name__)
 
 def get_games(collection_name, database_name, date_dict):
 
-	# need to address duplicate game records (NJD vs NYR 5/25/12)
-
 	games_client, games_database = db.connect_mongo(collection_name, database_name)
 
 	games = games_database.find(
@@ -34,7 +32,25 @@ def get_games(collection_name, database_name, date_dict):
 
 	db.close_mongo(games_client)
 
-	game_array = [game for game in games]
+	game_array, seen_games = [], []
+
+	for game in games:
+
+		if game['game_id'] not in seen_games:
+			seen_games.append(game['game_id'])
+
+			game_element = {
+
+				'league': game['league'],
+				'team': game['team'],
+				'opponent': game['opponent'],
+				'team_pts': game['team_pts'],
+				'oppt_pts': game['oppt_pts'],
+				'is_playoff': game['is_playoff'],
+
+			}
+
+			game_array.append(game_element)
 
 	return game_array
 
