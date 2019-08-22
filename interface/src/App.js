@@ -45,7 +45,11 @@ class App extends React.Component {
     return (
 
       <div>
-        <DatePicker onChange = {this.handleDateToggle}/>
+        <DatePicker 
+          onChange = {this.handleDateToggle}
+          placeholder = {'YYYY-MM-DD'}
+          size = 'large'
+        />
       </div>
 
     )
