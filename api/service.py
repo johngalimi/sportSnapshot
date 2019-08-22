@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 import database as db
 
 app = Flask(__name__)
+CORS(app)
 
 
 def get_games(collection_name, database_name, date_dict):
