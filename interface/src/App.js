@@ -47,7 +47,10 @@ class App extends React.Component {
 
     return (
 
-      <div style = {{paddingTop: '100px'}}>
+      <div 
+        // style = {{paddingTop: '100px'}}
+        className = 'main_app'
+      >
         <SPAppHeader />
         <br />
         <SPDateSelect 

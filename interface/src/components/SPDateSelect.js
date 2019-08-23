@@ -8,7 +8,7 @@ export class SPDateSelect extends React.Component {
     render() {
         return (
 
-            <div className = 'main_panel'>
+            <div className = 'date_panel'>
 
                 <h3>Select a date</h3>
                 <DatePicker

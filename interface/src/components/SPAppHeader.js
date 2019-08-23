@@ -7,9 +7,11 @@ export class SPAppHeader extends React.Component {
     render() {
         return (
 
-            <div className = 'main_panel'>
+            <div className = 'header_panel'>
 
-                <h1>sportSnapshot</h1>
+                <h1>
+                    <strong>sportSnapshot</strong>
+                </h1>
                 <h3>
                     <i>Sports data crawled, processed, and visualized</i>
                 </h3>
