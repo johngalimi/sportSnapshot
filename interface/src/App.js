@@ -1,5 +1,5 @@
 import React from 'react';
-import { DatePicker } from 'antd';
+import { SPDateSelect } from './components/SPDateSelect';
 
 import '..\\node_modules\\antd\\dist\\antd.css';
 
@@ -45,10 +45,8 @@ class App extends React.Component {
     return (
 
       <div>
-        <DatePicker 
-          onChange = {this.handleDateToggle}
-          placeholder = {'YYYY-MM-DD'}
-          size = 'large'
+        <SPDateSelect 
+          changeHandler={this.handleDateToggle}
         />
       </div>
 
