@@ -10,7 +10,9 @@ export class SPDateSelect extends React.Component {
 
             <div className = 'date_panel'>
 
-                <h3>Select a date</h3>
+                <h3 className = 'date_panel'>
+                    Select a date
+                </h3>
                 <DatePicker
                     onChange = {this.props.changeHandler}
                     placeholder = {'YYYY-MM-DD'}

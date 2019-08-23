@@ -9,10 +9,10 @@ export class SPAppHeader extends React.Component {
 
             <div className = 'header_panel'>
 
-                <h1>
+                <h1 className = 'header_panel'>
                     <strong>sportSnapshot</strong>
                 </h1>
-                <h3>
+                <h3 className = 'header_panel'>
                     <i>Sports data crawled, processed, and visualized</i>
                 </h3>
 
