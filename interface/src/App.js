@@ -1,5 +1,8 @@
 import React from 'react';
+import '.\\App.css'
+
 import { SPDateSelect } from '.\\components\\SPDateSelect';
+import { SPAppHeader } from '.\\components\\SPAppHeader';
 
 import '..\\node_modules\\antd\\dist\\antd.css';
 
@@ -44,7 +47,9 @@ class App extends React.Component {
 
     return (
 
-      <div>
+      <div style = {{paddingTop: '100px'}}>
+        <SPAppHeader />
+        <br />
         <SPDateSelect 
           changeHandler = {this.handleDateToggle}
         />
