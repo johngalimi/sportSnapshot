@@ -1,5 +1,5 @@
 import React from 'react';
-import { SPDateSelect } from './components/SPDateSelect';
+import { SPDateSelect } from '.\\components\\SPDateSelect';
 
 import '..\\node_modules\\antd\\dist\\antd.css';
 
@@ -46,7 +46,7 @@ class App extends React.Component {
 
       <div>
         <SPDateSelect 
-          changeHandler={this.handleDateToggle}
+          changeHandler = {this.handleDateToggle}
         />
       </div>
 
