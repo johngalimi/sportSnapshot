@@ -13,13 +13,6 @@ export class SPGameList extends React.Component {
 
             var game_list = []
 
-//             is_playoff: true
-// league: "NHL"
-// opponent: "Washington Capitals"
-// oppt_pts: 2
-// team: "Carolina Panthers"
-// team_pts: 5
-
             for (let i = 0; i < raw_games.length; i++) {
 
                 var g = raw_games[i]
@@ -42,7 +35,7 @@ export class SPGameList extends React.Component {
             )
 
         } else {
-            return <p>NO GAMES</p>
+            return <p>No Games</p>
         }
     }
 
