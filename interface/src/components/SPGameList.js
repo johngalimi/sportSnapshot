@@ -1,5 +1,7 @@
 import React from 'react';
 
+import '.\\styling\\SPGameList.css';
+
 export class SPGameList extends React.Component {
     constructor(props) {
         super(props);
@@ -11,8 +13,28 @@ export class SPGameList extends React.Component {
 
             var game_list = []
 
+//             is_playoff: true
+// league: "NHL"
+// opponent: "Washington Capitals"
+// oppt_pts: 2
+// team: "Carolina Panthers"
+// team_pts: 5
+
             for (let i = 0; i < raw_games.length; i++) {
-                game_list.push(<p key={i}>{raw_games[i].team}</p>)
+
+                var g = raw_games[i]
+
+                if (g['team_pts'] > g['oppt_pts']) {
+                    var [winner, loser, win_pts, lose_pts] = [g['team'], g['opponent'], g['team_pts'], g['oppt_pts']]
+                } else {
+                    var [winner, loser, win_pts, lose_pts] = [g['opponent'], g['team'], g['oppt_pts'], g['team_pts']]
+                }
+
+                var game_type = g['is_playoff'] ? 'Playoffs' : 'Regular Season'
+
+                var game_string = g['league'] + ' ' + game_type + ': ' + winner + ' defeated ' + loser + ' ' + win_pts + ' to ' + lose_pts
+
+                game_list.push(<p key={i}>{game_string}</p>)
             }
 
             return (
@@ -29,7 +51,7 @@ export class SPGameList extends React.Component {
         const processed_games = this.renderGames(this.props.game_list)
 
         return (
-            <div>
+            <div className = 'game_list'>
                 { processed_games }
             </div>
         )
