@@ -80,15 +80,22 @@ class App extends React.Component {
           </div>
 
         ) : (
+
           <div>
+
             <p>toggled</p>
+
+            <br />
+
             <button
               onClick = {this.toggleGames}
               style = {{color: 'black', padding: '5px'}}
             >
               Go Home
             </button>
+
           </div>
+
         )}
 
       </div>
