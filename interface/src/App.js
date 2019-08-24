@@ -3,6 +3,7 @@ import '.\\App.css'
 
 import { SPDateSelect } from '.\\components\\SPDateSelect';
 import { SPAppHeader } from '.\\components\\SPAppHeader';
+import { SPGameList } from '.\\components\\SPGameList';
 
 import '..\\node_modules\\antd\\dist\\antd.css';
 
@@ -84,6 +85,10 @@ class App extends React.Component {
           <div>
 
             <p>toggled</p>
+
+            <div>
+              <SPGameList game_list = {this.state.game_data} />
+            </div>
 
             <br />
 
