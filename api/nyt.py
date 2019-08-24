@@ -13,7 +13,7 @@ print(r.headers['content-type'])
 
 print(r.encoding)
 
-print(r.text[0])
+# print(r.text[0])
 
 # print(r.json())
 
