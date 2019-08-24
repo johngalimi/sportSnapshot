@@ -1,5 +1,6 @@
 .main_app {
     padding-top: 100px;
-    padding-bottom: 100px;
-    background-color: #393f4d
+    padding-bottom: 200px;
+    background-color: #393f4d;
+    text-align: center;
 }
