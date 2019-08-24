@@ -84,8 +84,6 @@ class App extends React.Component {
 
           <div>
 
-            <p>toggled</p>
-
             <div>
               <SPGameList game_list = {this.state.game_data} />
             </div>

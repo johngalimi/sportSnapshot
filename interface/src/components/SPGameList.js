@@ -9,23 +9,16 @@ export class SPGameList extends React.Component {
     renderGames(raw_games) {
         if (raw_games.length > 0) {
 
-            console.log(raw_games)
-
             var game_list = []
 
             for (let i = 0; i < raw_games.length; i++) {
                 game_list.push(<p key={i}>{raw_games[i].team}</p>)
             }
 
-            console.log(game_list)
-
             return (
                 <div>{game_list}</div>
             )
 
-            // return (games.map((game) => {
-            //     <p>game['team']</p>
-            // }))
         } else {
             return <p>NO GAMES</p>
         }
