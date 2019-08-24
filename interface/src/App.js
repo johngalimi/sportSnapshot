@@ -48,27 +48,48 @@ class App extends React.Component {
 
   render() {
 
+    const isToggled = this.state.game_toggle;
+
     return (
 
       <div
         className = 'main_app'
       >
-        <SPAppHeader />
 
-        <br />
+        {!isToggled ? (
+          
+          <div>
 
-        <SPDateSelect 
-          changeHandler = {this.handleDateToggle}
-        />
+            <SPAppHeader />
 
-        <br />
+            <br />
 
-        <button
-          onClick = {this.toggleGames}
-          style = {{color: 'black', padding: '5px'}}
-        >
-          Find Games
-        </button>
+            <SPDateSelect 
+              changeHandler = {this.handleDateToggle}
+            />
+
+            <br />
+
+            <button
+              onClick = {this.toggleGames}
+              style = {{color: 'black', padding: '5px'}}
+            >
+              Find Games
+            </button>
+
+          </div>
+
+        ) : (
+          <div>
+            <p>toggled</p>
+            <button
+              onClick = {this.toggleGames}
+              style = {{color: 'black', padding: '5px'}}
+            >
+              Go Home
+            </button>
+          </div>
+        )}
 
       </div>
 
