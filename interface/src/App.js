@@ -10,12 +10,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      viewGames: false,
+      game_toggle: false,
       game_data: [],
     }
     this.retrieveData = this.retrieveData.bind(this);
     this.handleDateToggle = this.handleDateToggle.bind(this);
-    this.findGames = this.findGames.bind(this);
+    this.toggleGames = this.toggleGames.bind(this);
   }
 
   retrieveData = (selected_year, selected_month, selected_day) => {
@@ -40,9 +40,9 @@ class App extends React.Component {
     }
   }
 
-  findGames = () => {
+  toggleGames = () => {
     this.setState({
-      viewGames: !this.state.viewGames
+      game_toggle: !this.state.game_toggle
     })
   }
 
@@ -64,7 +64,7 @@ class App extends React.Component {
         <br />
 
         <button
-          onClick = {this.findGames}
+          onClick = {this.toggleGames}
           style = {{color: 'black', padding: '5px'}}
         >
           Find Games
