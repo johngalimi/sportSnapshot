@@ -10,9 +10,10 @@ export class SPGameCarousel extends React.Component {
     }
 
     renderGames(raw_games) {
-        if (raw_games.length > 0) {
 
-            var game_list = []
+        var game_list = [];
+
+        if (raw_games.length > 0) {
 
             for (let i = 0; i < raw_games.length; i++) {
 
@@ -39,9 +40,7 @@ export class SPGameCarousel extends React.Component {
                 )
             }
 
-        } else {
-            var game_list = []
-        }
+        } 
 
         return game_list
     }
@@ -54,12 +53,14 @@ export class SPGameCarousel extends React.Component {
 
             <Carousel>
 
-                {processed_games.map((g) => {
+                {processed_games.map((g, idx) => {
+
                     return (
-                        <div>
+                        <div key = {idx}>
                             <h3>{g.league}</h3>
                         </div>
                     )
+                    
                 })}
 
             </Carousel>
