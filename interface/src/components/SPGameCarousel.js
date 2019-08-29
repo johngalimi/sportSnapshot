@@ -57,7 +57,10 @@ export class SPGameCarousel extends React.Component {
 
                     return (
                         <div key = {idx}>
-                            <h3>{g.league}</h3>
+                            <h1>{this.props.game_date}</h1>
+                            <h2>{g.league} - {g.type}</h2>
+                            <h2>{g.winner} vs {g.loser}</h2>
+                            <h2>{g.win_pts} - {g.lose_pts}</h2>
                         </div>
                     )
                     

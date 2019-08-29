@@ -12,6 +12,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      selected_date: '',
       game_toggle: false,
       game_data: [],
     }
@@ -32,7 +33,12 @@ class App extends React.Component {
 
   }
 
-  handleDateToggle = (date, dateString) => {
+  handleDateToggle = (_, dateString) => {
+
+    // console.log(date);
+    // console.log(dateString);
+
+    this.setState({selected_date: dateString})
 
     var selected_date_arr = dateString.split('-');
 
@@ -86,8 +92,10 @@ class App extends React.Component {
           <div>
 
             <div>
-              {/* <SPGameList game_list = {this.state.game_data} /> */}
-              <SPGameCarousel game_list = {this.state.game_data} />
+              <SPGameCarousel
+                game_date = {this.state.selected_date}
+                game_list = {this.state.game_data} 
+              />
             </div>
 
             <br />
