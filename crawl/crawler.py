@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 def generate_soup(target_url):
     
-    print('from chromeos')
+    print('from chromeos linux box')
     
 	page = requests.get(target_url)
 	good_url = True
