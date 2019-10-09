@@ -6,7 +6,9 @@ from bs4 import BeautifulSoup
 
 
 def generate_soup(target_url):
-
+    
+    print('from chromeos')
+    
 	page = requests.get(target_url)
 	good_url = True
 
