@@ -34,13 +34,11 @@ class Schedule:
     def parse_table(self):
         table = self.get_table()
         tr_rows = table.find_all('tr')
-
         td_rows = [row.findChildren(name = 'td') for row in tr_rows]
 
         games = []
 
         for td_row in td_rows:
-
             data = self.parse_row(td_row)
 
             if len(data) > 0:
