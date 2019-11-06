@@ -22,6 +22,15 @@ class Schedule:
         return table
 
 
+    def parse_row(self, row):
+        game = {}
+
+        for tag in row:
+            game[tag.attrs['data-stat']] = tag.text
+
+        return game
+
+
     def parse_table(self):
         table = self.get_table()
         tr_rows = table.find_all('tr')
@@ -31,13 +40,9 @@ class Schedule:
         games = []
 
         for td_row in td_rows:
-            game = {}
-            for tag in td_row:
-                game[tag.attrs['data-stat']] = tag.text
-            games.append(game)
-        
-        print(games)
-        print(len(games))
+            games.append(self.parse_row(td_row))
+
+        return games
 
 
 if __name__ == '__main__':
