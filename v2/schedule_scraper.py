@@ -49,15 +49,38 @@ class Schedule:
 
     def clean_games(self):
         games = self.parse_table()
+        # get team name and season from url
+
+        target_fields = [
+                'date_game',
+                'opp_name',
+                'pts',
+                'opp_pts',
+                'wins',
+                'losses',
+                'game_streak',
+             ]
         
-        for i, game in enumerate(games):
-            print(' ')
-            print(i)
-            print(game)
+        cleaned_games = []
+
+        games = games[0:1]
+        
+        for game in games:
+            cleaned_game = {}
+
+            for target_field in target_fields:
+                cleaned_game[target_field] = game[target_field]
+
+            cleaned_games.append(cleaned_game)
+            print(cleaned_games) 
 
 
 if __name__ == '__main__':
-    test_url = 'https://basketball-reference.com/teams/BOS/2017_games.html'
 
+    team = 'WAS'
+    season = '2010'
+
+    test_url = "https://basketball-reference.com/teams/{}/{}_games.html".format(team, season)
+    
     test_schedule = Schedule(test_url)
     test_schedule.clean_games()
