@@ -40,13 +40,26 @@ class Schedule:
         games = []
 
         for td_row in td_rows:
-            games.append(self.parse_row(td_row))
+
+            data = self.parse_row(td_row)
+
+            if len(data) > 0:
+                games.append(data)
 
         return games
+
+
+    def clean_games(self):
+        games = self.parse_table()
+        
+        for i, game in enumerate(games):
+            print(' ')
+            print(i)
+            print(game)
 
 
 if __name__ == '__main__':
     test_url = 'https://basketball-reference.com/teams/BOS/2017_games.html'
 
     test_schedule = Schedule(test_url)
-    test_schedule.parse_table()
+    test_schedule.clean_games()
