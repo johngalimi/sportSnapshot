@@ -85,8 +85,6 @@ if __name__ == '__main__':
 
     team = 'BOS'
     season = '2018'
-
-    test_url = "https://basketball-reference.com/teams/{}/{}_games.html".format(team, season)
     
     test_schedule = Schedule(team, season)
     test_schedule.clean_games()
