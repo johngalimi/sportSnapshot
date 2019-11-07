@@ -4,8 +4,12 @@ from bs4 import BeautifulSoup
 
 class Schedule:
 
-    def __init__(self, url):
-        self.url = url
+    url_template = "https://basketball-reference.com/teams/{}/{}_games.html"
+
+    def __init__(self, team, season):
+        self.team = team
+        self.season = season
+        self.url = self.url_template.format(team, season)
 
 
     def get_soup(self):
@@ -18,7 +22,7 @@ class Schedule:
     def get_table(self):
         soup = self.get_soup()
         table = soup.find('table', {'id': 'games'})
-
+        
         return table
 
 
@@ -33,6 +37,7 @@ class Schedule:
 
     def parse_table(self):
         table = self.get_table()
+        
         tr_rows = table.find_all('tr')
         td_rows = [row.findChildren(name = 'td') for row in tr_rows]
 
@@ -49,7 +54,6 @@ class Schedule:
 
     def clean_games(self):
         games = self.parse_table()
-        # get team name and season from url
 
         target_fields = [
                 'date_game',
@@ -62,8 +66,6 @@ class Schedule:
              ]
         
         cleaned_games = []
-
-        games = games[0:1]
         
         for game in games:
             cleaned_game = {}
@@ -71,16 +73,20 @@ class Schedule:
             for target_field in target_fields:
                 cleaned_game[target_field] = game[target_field]
 
+            cleaned_game['team'] = self.team
+            cleaned_game['season'] = self.season
+
             cleaned_games.append(cleaned_game)
-            print(cleaned_games) 
+        
+        return cleaned_games 
 
 
 if __name__ == '__main__':
 
-    team = 'WAS'
-    season = '2010'
+    team = 'BOS'
+    season = '2018'
 
     test_url = "https://basketball-reference.com/teams/{}/{}_games.html".format(team, season)
     
-    test_schedule = Schedule(test_url)
+    test_schedule = Schedule(team, season)
     test_schedule.clean_games()
