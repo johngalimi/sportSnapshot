@@ -15,8 +15,30 @@ def connect_db(database, user, password, host):
 
 def disconnect_db(connection, cursor):
     
-    del cursor
+    cursor.close()
     connection.close()
+
+    del cursor
+    del connection
+
+
+def create_tables(connection, cursor):
+    
+    commands = (
+            """
+            CREATE TABLE IF NOT EXISTS teams (
+                scTeamId INTEGER NOT NULL,
+                scTeamAbbr VARCHAR(5) NOT NULL,
+                scTeamName VARCHAR(255) NOT NULL,
+                PRIMARY KEY (scTeamId)
+            )
+            """,
+            )
+
+    for command in commands:
+        cursor.execute(command)
+    
+    connection.commit()
 
 
 if __name__ == '__main__':
@@ -25,6 +47,8 @@ if __name__ == '__main__':
     credential = 'postgres'
     host = 'localhost'
 
-    cxn, curs = connect_db(db_name, credential, credential, host))
+    cxn, curs = connect_db(db_name, credential, credential, host)
 
+    create_tables(cxn, curs)
+    
     disconnect_db(cxn, curs)
