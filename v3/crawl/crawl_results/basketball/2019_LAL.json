@@ -1,0 +1,55 @@
+{
+    "sport": "basketball",
+    "team": "LAL",
+    "season": 2019,
+    "games": [
+        {
+            "date_game": "Thu, Oct 18, 2018",
+            "game_start_time": "10:30p",
+            "network": "",
+            "box_score_text": "Box Score",
+            "game_location": "@",
+            "opp_name": "Portland Trail Blazers",
+            "game_result": "L",
+            "overtimes": "",
+            "pts": "119",
+            "opp_pts": "128",
+            "wins": "0",
+            "losses": "1",
+            "game_streak": "L 1",
+            "game_remarks": ""
+        },
+        {
+            "date_game": "Sat, Oct 20, 2018",
+            "game_start_time": "10:30p",
+            "network": "",
+            "box_score_text": "Box Score",
+            "game_location": "",
+            "opp_name": "Houston Rockets",
+            "game_result": "L",
+            "overtimes": "",
+            "pts": "115",
+            "opp_pts": "124",
+            "wins": "0",
+            "losses": "2",
+            "game_streak": "L 2",
+            "game_remarks": ""
+        },
+        {
+            "date_game": "Mon, Oct 22, 2018",
+            "game_start_time": "10:30p",
+            "network": "",
+            "box_score_text": "Box Score",
+            "game_location": "",
+            "opp_name": "San Antonio Spurs",
+            "game_result": "L",
+            "overtimes": "OT",
+            "pts": "142",
+            "opp_pts": "143",
+            "wins": "0",
+            "losses": "3",
+            "game_streak": "L 3",
+            "game_remarks": ""
+        }
+    ]
+}

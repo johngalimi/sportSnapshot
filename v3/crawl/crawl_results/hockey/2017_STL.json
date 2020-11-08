@@ -1,0 +1,55 @@
+{
+    "sport": "hockey",
+    "team": "STL",
+    "season": 2017,
+    "games": [
+        {
+            "date_game": "2016-10-12",
+            "game_location": "@",
+            "opp_name": "Chicago Blackhawks",
+            "goals": "5",
+            "opp_goals": "2",
+            "game_outcome": "W",
+            "overtimes": "",
+            "wins": "1",
+            "losses": "0",
+            "losses_ot": "0",
+            "game_streak": "W 1",
+            "attendance": "21,729",
+            "game_duration": "2:29",
+            "game_remarks": ""
+        },
+        {
+            "date_game": "2016-10-13",
+            "game_location": "",
+            "opp_name": "Minnesota Wild",
+            "goals": "3",
+            "opp_goals": "2",
+            "game_outcome": "W",
+            "overtimes": "",
+            "wins": "2",
+            "losses": "0",
+            "losses_ot": "0",
+            "game_streak": "W 2",
+            "attendance": "19,673",
+            "game_duration": "2:29",
+            "game_remarks": ""
+        },
+        {
+            "date_game": "2016-10-15",
+            "game_location": "",
+            "opp_name": "New York Rangers",
+            "goals": "3",
+            "opp_goals": "2",
+            "game_outcome": "W",
+            "overtimes": "",
+            "wins": "3",
+            "losses": "0",
+            "losses_ot": "0",
+            "game_streak": "W 3",
+            "attendance": "19,197",
+            "game_duration": "2:24",
+            "game_remarks": ""
+        }
+    ]
+}

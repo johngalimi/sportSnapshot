@@ -1,0 +1,46 @@
+{
+    "sport": "hockey",
+    "team": "WSH",
+    "season": 2015,
+    "games": [
+        {
+            "date_game": "2014-10-09",
+            "game_location": "",
+            "opp_name": "Montreal Canadiens",
+            "goals": "1",
+            "opp_goals": "2",
+            "game_outcome": "L",
+            "overtimes": "SO",
+            "wins": "0",
+            "losses": "0",
+            "losses_ot": "1",
+            "game_streak": "L 1"
+        },
+        {
+            "date_game": "2014-10-11",
+            "game_location": "@",
+            "opp_name": "Boston Bruins",
+            "goals": "4",
+            "opp_goals": "0",
+            "game_outcome": "W",
+            "overtimes": "",
+            "wins": "1",
+            "losses": "0",
+            "losses_ot": "1",
+            "game_streak": "W 1"
+        },
+        {
+            "date_game": "2014-10-14",
+            "game_location": "",
+            "opp_name": "San Jose Sharks",
+            "goals": "5",
+            "opp_goals": "6",
+            "game_outcome": "L",
+            "overtimes": "SO",
+            "wins": "1",
+            "losses": "0",
+            "losses_ot": "2",
+            "game_streak": "L 1"
+        }
+    ]
+}
