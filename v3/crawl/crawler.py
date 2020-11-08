@@ -39,9 +39,9 @@ class Crawler:
         return {tag.attrs["data-stat"]: tag.text for tag in row}
 
     def construct_json(self, sport, team, season, games):
-        return {"sport": sport, "team": team, "season": season, "games": games[0:3]}
+        return {"sport": sport, "team": team, "season": season, "games": games}
 
-    def extract(self, sport, team, season):
+    def crawl(self, sport, team, season):
         url = self.construct_url(sport, team, season)
         blob = self.get_html(url)
         text = self.get_response_text(blob)
@@ -52,8 +52,8 @@ class Crawler:
 
         schedule_dict = self.construct_json(sport, team, season, parsed_games)
 
-        with open(f"crawl_results/{sport}/{season}_{team}.json", "w") as fp:
-            json.dump(schedule_dict, fp)
+        with open(f"raw_results/{sport}/{season}_{team}.json", "w") as f:
+            json.dump(schedule_dict, f)
 
         return schedule_dict
 
@@ -63,11 +63,10 @@ if __name__ == "__main__":
 
     schedules_to_crawl = [
         ("basketball", "LAL", 2019),
+        ("basketball", "CLE", 2011),
         ("hockey", "STL", 2017),
         ("hockey", "WSH", 2015),
     ]
 
     for sport, team, season in schedules_to_crawl:
-        games = crawler.extract(sport, team, season)
-        print(games)
-        print()
+        games = crawler.crawl(sport, team, season)
