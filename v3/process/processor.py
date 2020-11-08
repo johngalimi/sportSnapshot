@@ -4,6 +4,20 @@ from datetime import datetime
 
 
 class Processor:
+
+    # define processed game skeleton object
+    PROCESSED_GAME = {
+        "league_name": None,
+        "season": None,
+        "game_date": None,
+        "is_team_home": None,
+        "is_overtime": None,
+        "team_name": None,
+        "opponent_name": None,
+        "team_points": None,
+        "opponent_points": None,
+    }
+
     def get_raw(self, sport, team, season):
         with open(f"../crawl/raw_results/{sport}/{season}_{team}.json") as f:
             raw_data = json.load(f)
@@ -13,6 +27,14 @@ class Processor:
     def get_league_from_sport(self, sport):
         league_lookup = {"basketball": "NBA", "hockey": "NHL"}
         return league_lookup.get(sport, None)
+
+    def get_team_from_abbreviation(self, sport, team):
+        team_lookup = {
+            "basketball": {"CLE": "Cleveland Cavaliers", "LAL": "Los Angeles Lakers"},
+            "hockey": {"WSH": "Washington Capitals", "STL": "St. Louis Blues"},
+        }
+
+        return team_lookup[sport][team]
 
     def get_season_string(self, season):
         return f"{season-1}-{season-2000}"
@@ -31,17 +53,7 @@ class Processor:
     def process_game(self, sport, team, season, game_record):
 
         # define processed game skeleton object
-        processed_game = {
-            "league_name": None,
-            "season": None,
-            "game_date": None,
-            "is_team_home": None,
-            "is_overtime": None,
-            "team_name": None,
-            "opponent_name": None,
-            "team_points": None,
-            "opponent_points": None,
-        }
+        processed_game = self.PROCESSED_GAME.copy()
 
         # we should just be inheriting from a base processor and delegating league-specific logic to child classes
         if sport == "basketball":
@@ -60,7 +72,7 @@ class Processor:
             # getting team and opponent information
             processed_game["league_name"] = self.get_league_from_sport(sport)
             processed_game["season"] = self.get_season_string(season)
-            processed_game["team_name"] = team
+            processed_game["team_name"] = self.get_team_from_abbreviation(sport, team)
             processed_game["opponent_name"] = game_record["opp_name"]
             processed_game["team_points"] = game_record["pts"]
             processed_game["opponent_points"] = game_record["opp_pts"]
@@ -83,7 +95,7 @@ class Processor:
             # getting team and opponent information
             processed_game["league_name"] = self.get_league_from_sport(sport)
             processed_game["season"] = self.get_season_string(season)
-            processed_game["team_name"] = team
+            processed_game["team_name"] = self.get_team_from_abbreviation(sport, team)
             processed_game["opponent_name"] = game_record["opp_name"]
             processed_game["team_points"] = game_record["goals"]
             processed_game["opponent_points"] = game_record["opp_goals"]
@@ -100,7 +112,8 @@ class Processor:
         season_df = pd.DataFrame(processed_games)
 
         # write to csv in "a" (append) mode
-        season_df.to_csv("games.csv", mode="a", index=False, header=False)
+        # need to include headers only at the top when appending
+        season_df.to_csv("games.csv", mode="a", index=False)
 
 
 if __name__ == "__main__":
@@ -113,6 +126,10 @@ if __name__ == "__main__":
         ("hockey", "STL", 2017),
     ]
 
+    master_processed_games = []
+
     for sport, team, season in schedules_to_process:
         games = processor.process(sport, team, season)
-        processor.write_processed_games(games)
+        master_processed_games.extend(games)
+
+    processor.write_processed_games(master_processed_games)
