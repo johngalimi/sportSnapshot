@@ -39,6 +39,45 @@ class Processor:
     def get_season_string(self, season):
         return f"{season-1}-{season-2000}"
 
+    def get_is_team_home(self, location_column_value):
+        return "@" not in location_column_value
+
+    def get_is_overtime(self, sport, overtime_column_value):
+
+        if sport == "basketball":
+            return "OT" in overtime_column_value
+
+        elif sport == "hockey":
+            return any(
+                ot_identifier in overtime_column_value for ot_identifier in ["OT", "SO"]
+            )
+
+    def get_game_date(self, sport, date_column_value):
+
+        if sport == "basketball":
+
+            raw_game_date = "".join(
+                game_record[date_column_value].split(",")[1:]
+            ).lstrip()
+
+            return datetime.strptime(raw_game_date, "%b %d %Y").date()
+
+        elif sport == "hockey":
+
+            return datetime.strptime(date_column_value, "%Y-%m-%d").date()
+
+    def get_game_date(self, sport, date_column_value):
+
+        if sport == "basketball":
+
+            raw_game_date = "".join(date_column_value.split(",")[1:]).lstrip()
+
+            return datetime.strptime(raw_game_date, "%b %d %Y").date()
+
+        elif sport == "hockey":
+
+            return datetime.strptime(date_column_value, "%Y-%m-%d").date()
+
     def process_games(self, season_data):
 
         processed_games = [
@@ -55,48 +94,30 @@ class Processor:
         # define processed game skeleton object
         processed_game = self.PROCESSED_GAME.copy()
 
+        # get game date
+        processed_game["game_date"] = self.get_game_date(
+            sport, game_record["date_game"]
+        )
+
+        processed_game["is_team_home"] = self.get_is_team_home(
+            game_record["game_location"]
+        )
+        processed_game["is_overtime"] = self.get_is_overtime(
+            sport, game_record["overtimes"]
+        )
+
+        # getting team and opponent information
+        processed_game["league_name"] = self.get_league_from_sport(sport)
+        processed_game["season"] = self.get_season_string(season)
+        processed_game["team_name"] = self.get_team_from_abbreviation(sport, team)
+        processed_game["opponent_name"] = game_record["opp_name"]
+
         # we should just be inheriting from a base processor and delegating league-specific logic to child classes
         if sport == "basketball":
-
-            # parsing game date
-            raw_game_date = "".join(game_record["date_game"].split(",")[1:]).lstrip()
-
-            processed_game["game_date"] = datetime.strptime(
-                raw_game_date, "%b %d %Y"
-            ).date()
-
-            # processing bit columns
-            processed_game["is_team_home"] = "@" not in game_record["game_location"]
-            processed_game["is_overtime"] = "OT" in game_record["overtimes"]
-
-            # getting team and opponent information
-            processed_game["league_name"] = self.get_league_from_sport(sport)
-            processed_game["season"] = self.get_season_string(season)
-            processed_game["team_name"] = self.get_team_from_abbreviation(sport, team)
-            processed_game["opponent_name"] = game_record["opp_name"]
             processed_game["team_points"] = game_record["pts"]
             processed_game["opponent_points"] = game_record["opp_pts"]
 
         elif sport == "hockey":
-
-            # parsing game date
-            processed_game["game_date"] = datetime.strptime(
-                game_record["date_game"], "%Y-%m-%d"
-            ).date()
-
-            # processing bit columns
-            processed_game["is_team_home"] = "@" not in game_record["game_location"]
-
-            processed_game["is_overtime"] = any(
-                ot_identifier in game_record["overtimes"]
-                for ot_identifier in ["OT", "SO"]
-            )
-
-            # getting team and opponent information
-            processed_game["league_name"] = self.get_league_from_sport(sport)
-            processed_game["season"] = self.get_season_string(season)
-            processed_game["team_name"] = self.get_team_from_abbreviation(sport, team)
-            processed_game["opponent_name"] = game_record["opp_name"]
             processed_game["team_points"] = game_record["goals"]
             processed_game["opponent_points"] = game_record["opp_goals"]
 
