@@ -1,4 +1,5 @@
 import json
+import logging
 import pandas as pd
 from datetime import datetime
 
@@ -138,6 +139,9 @@ class Processor:
 
 
 if __name__ == "__main__":
+    start_time = datetime.now()
+    logging.warning(f"Processing started, current time: {start_time}")
+
     processor = Processor()
 
     schedules_to_process = [
@@ -150,7 +154,13 @@ if __name__ == "__main__":
     master_processed_games = []
 
     for sport, team, season in schedules_to_process:
+        logging.warning(f"---> Started {sport}.{team}.{season}")
+
         games = processor.process(sport, team, season)
         master_processed_games.extend(games)
 
+        logging.warning(f"---> Finished {sport}.{team}.{season}")
+
     processor.write_processed_games(master_processed_games)
+
+    logging.warning(f"Processing complete, time elapsed: {datetime.now() - start_time}")
