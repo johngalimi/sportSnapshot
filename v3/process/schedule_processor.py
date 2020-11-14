@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime
 
 
-class Processor:
+class ScheduleProcessor:
 
     # define processed game skeleton object
     PROCESSED_GAME = {
@@ -20,7 +20,7 @@ class Processor:
     }
 
     def get_raw(self, sport, team, season):
-        with open(f"../crawl/raw_results/{sport}/{season}_{team}.json") as f:
+        with open(f"../crawl/results/{sport}/{season}_{team}.json") as f:
             raw_data = json.load(f)
 
         return raw_data
@@ -135,14 +135,14 @@ class Processor:
 
         # write to csv in "a" (append) mode
         # need to include headers only at the top when appending
-        season_df.to_csv("games.csv", mode="a", index=False)
+        season_df.to_csv("results/games.csv", mode="a", index=False)
 
 
 if __name__ == "__main__":
     start_time = datetime.now()
     logging.warning(f"Processing started, current time: {start_time}")
 
-    processor = Processor()
+    schedule_processor = ScheduleProcessor()
 
     schedules_to_process = [
         ("basketball", "LAL", 2019),
@@ -156,11 +156,10 @@ if __name__ == "__main__":
     for sport, team, season in schedules_to_process:
         logging.warning(f"---> Started {sport}.{team}.{season}")
 
-        games = processor.process(sport, team, season)
-        master_processed_games.extend(games)
+        master_processed_games.extend(schedule_processor.process(sport, team, season))
 
         logging.warning(f"---> Finished {sport}.{team}.{season}")
 
-    processor.write_processed_games(master_processed_games)
+    schedule_processor.write_processed_games(master_processed_games)
 
     logging.warning(f"Processing complete, time elapsed: {datetime.now() - start_time}")

@@ -37,7 +37,7 @@ class ScheduleCrawler(BaseCrawler):
         return {"sport": sport, "team": team, "season": season, "games": games}
 
     def write_raw_crawl_results(self, sport, season, team, schedule_data):
-        with open(f"raw_results/{sport}/{season}_{team}.json", "w") as f:
+        with open(f"results/{sport}/{season}_{team}.json", "w") as f:
             json.dump(schedule_data, f)
 
     def crawl(self, sport, team, season):
