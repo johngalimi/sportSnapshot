@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 
 from base_crawler import BaseCrawler
+from seeder import Seeder
 
 
 class ScheduleCrawler(BaseCrawler):
@@ -37,10 +38,13 @@ class ScheduleCrawler(BaseCrawler):
         return {"sport": sport, "team": team, "season": season, "games": games}
 
     def write_raw_crawl_results(self, sport, season, team, schedule_data):
+        print(schedule_data)
+
+        # file write not currently working for nonexistent jsons
         with open(f"results/{sport}/{season}_{team}.json", "w") as f:
             json.dump(schedule_data, f)
 
-    def crawl(self, sport, team, season):
+    def crawl(self, sport, team, season, team_metadata):
         schedule_url = self.construct_url(sport, team, season)
 
         blob = self.get_html(schedule_url)
@@ -63,18 +67,22 @@ if __name__ == "__main__":
 
     schedule_crawler = ScheduleCrawler()
 
-    schedules_to_crawl = [
-        ("basketball", "LAL", 2019),
-        ("basketball", "CLE", 2011),
-        ("hockey", "STL", 2017),
-        ("hockey", "WSH", 2015),
-    ]
+    seeder = Seeder()
 
-    for sport, team, season in schedules_to_crawl:
-        logging.warning(f"---> Started {sport}.{team}.{season}")
+    sports = ["hockey", "basketball"]
+    seasons = seeder.get_seasons(base_year=2020, years_back=2)
 
-        schedule_crawler.crawl(sport, team, season)
+    for sport in sports:
+        teams = seeder.get_teams(sport)
 
-        logging.warning(f"---> Finished {sport}.{team}.{season}")
+        for team_metadata in teams:
+            (team_abbr, team_location, team_name) = team_metadata
+
+            for season in seasons:
+                logging.warning(f"---> Started {sport}.{team_abbr}.{season}")
+
+                schedule_crawler.crawl(sport, team_abbr, season, team_metadata)
+
+                logging.warning(f"---> Finished {sport}.{team_abbr}.{season}")
 
     logging.warning(f"Crawling complete, time elapsed: {datetime.now() - start_time}")

@@ -139,6 +139,7 @@ class ScheduleProcessor:
 
 
 if __name__ == "__main__":
+
     start_time = datetime.now()
     logging.warning(f"Processing started, current time: {start_time}")
 
