@@ -1,74 +1,20 @@
+from constants import NBA_TEAMS, NHL_TEAMS
+
+
 class Seeder:
+
+    TEAMS = {"basketball": NBA_TEAMS, "hockey": NHL_TEAMS}
+
     def get_seasons(self, base_year, years_back):
         return [season for season in range(base_year - years_back, base_year)]
 
     def get_teams(self, sport):
-        teams = {
-            "basketball": [
-                ("MIL", "Milwaukee", "Bucks"),
-                ("TOR", "Toronto", "Raptors"),
-                ("BOS", "Boston", "Celtics"),
-                ("MIA", "Miami", "Heat"),
-                ("IND", "Indiana", "Pacers"),
-                ("PHI", "Philadelphia", "76ers"),
-                ("BRK", "Brooklyn", "Nets"),
-                ("ORL", "Orlando", "Magic"),
-                ("WAS", "Washington", "Wizards"),
-                ("CHO", "Charlotte", "Hornets"),
-                ("CHI", "Chicago", "Bulls"),
-                ("NYK", "New York", "Knicks"),
-                ("DET", "Detroit", "Pistons"),
-                ("ATL", "Atlanta", "Hawks"),
-                ("CLE", "Cleveland", "Cavaliers"),
-                ("LAL", "Los Angeles", "Lakers"),
-                ("LAC", "Los Angeles", "Clippers"),
-                ("DEN", "Denver", "Nuggets"),
-                ("UTA", "Utah", "Jazz"),
-                ("OKC", "Oklahoma City", "Thunder"),
-                ("HOU", "Houston", "Rockets"),
-                ("DAL", "Dallas", "Mavericks"),
-                ("MEM", "Memphis", "Grizzlies"),
-                ("POR", "Portland", "Trailblazers"),
-                ("NOP", "New Orleans", "Pelicans"),
-                ("SAC", "Sacramento", "Kings"),
-                ("SAS", "San Antonio", "Spurs"),
-                ("PHO", "Phoenix", "Suns"),
-                ("MIN", "Minnesota", "Timberwolves"),
-                ("GSW", "Golden State", "Warriors"),
-            ],
-            "hockey": [
-                ("BOS", "Boston", "Celtics"),
-                ("TBL", "Tampa Bay", "Lightning"),
-                ("TOR", "Toronto", "Maple Leafs"),
-                ("FLA", "Florida", "Panthers"),
-                ("MTL", "Montreal", "Canadiens"),
-                ("BUF", "Buffalo", "Sabres"),
-                ("OTT", "Ottawa", "Senators"),
-                ("DET", "Detroit", "Red Wings"),
-                ("WSH", "Washington", "Capitals"),
-                ("PHI", "Philadelphia", "Flyers"),
-                ("PIT", "Pittsburgh", "Penguins"),
-                ("CAR", "Carolina", "Hurricanes"),
-                ("CBJ", "Columbus", "Blue Jackets"),
-                ("NYI", "New York", "Islanders"),
-                ("NYR", "New York", "Rangers"),
-                ("NJD", "New Jersey", "Devils"),
-                ("STL", "St. Louis", "Blues"),
-                ("COL", "Colorado", "Avalanche"),
-                ("DAL", "Dallas", "Stars"),
-                ("WPG", "Winnipeg", "Jets"),
-                ("NSH", "Nashville", "Predators"),
-                ("MIN", "Minnesota", "Wild"),
-                ("CHI", "Chicago", "Blackhawks"),
-                ("VEG", "Vegas", "Golden Knights"),
-                ("EDM", "Edmonton", "Oilers"),
-                ("CGY", "Calgary", "Flames"),
-                ("VAN", "Vancouver", "Canucks"),
-                ("ARI", "Arizona", "Coyotes"),
-                ("ANA", "Anaheim", "Ducks"),
-                ("LAK", "Los Angeles", "Kings"),
-                ("SJS", "San Jose", "Sharks"),
-            ],
-        }
+        return self.TEAMS.get(sport, [])
 
-        return teams.get(sport, [])
+    def construct_team_lookup(self, sport):
+        teams = self.TEAMS.get(sport, None)
+
+        if teams is None:
+            return {}
+
+        return {_abbr: f"{_location} {_name}" for _abbr, _location, _name in teams}

@@ -1,3 +1,4 @@
+import os
 import json
 import logging
 import pandas as pd
@@ -7,6 +8,8 @@ from seeder import Seeder
 
 
 class ScheduleProcessor:
+
+    seeder = Seeder()
 
     # define processed game skeleton object
     PROCESSED_GAME = {
@@ -22,7 +25,12 @@ class ScheduleProcessor:
     }
 
     def get_raw(self, sport, team, season):
-        with open(f"../crawl/results/{sport}/{season}_{team}.json") as f:
+
+        if not os.path.isfile(f"results/{sport}/{season}_{team}.json"):
+            logging.warning(f"Raw crawl result not available")
+            return {}
+
+        with open(f"results/{sport}/{season}_{team}.json") as f:
             raw_data = json.load(f)
 
         return raw_data
@@ -32,12 +40,11 @@ class ScheduleProcessor:
         return league_lookup.get(sport, None)
 
     def get_team_from_abbreviation(self, sport, team):
-        team_lookup = {
-            "basketball": {"CLE": "Cleveland Cavaliers", "LAL": "Los Angeles Lakers"},
-            "hockey": {"WSH": "Washington Capitals", "STL": "St. Louis Blues"},
-        }
 
-        return team_lookup[sport][team]
+        # TODO -- this should happen once at instantiation of processor rather than on every individual result
+        team_lookup = self.seeder.construct_team_lookup(sport)
+
+        return team_lookup[team]
 
     def get_season_string(self, season):
         return f"{season-1}-{season-2000}"
@@ -83,11 +90,13 @@ class ScheduleProcessor:
 
     def process_games(self, season_data):
 
+        games = season_data.get("games", [])
+
         processed_games = [
             self.process_game(
                 season_data["sport"], season_data["team"], season_data["season"], game
             )
-            for game in season_data["games"]
+            for game in games
         ]
 
         return processed_games
@@ -137,7 +146,7 @@ class ScheduleProcessor:
 
         # write to csv in "a" (append) mode
         # need to include headers only at the top when appending
-        season_df.to_csv("results/games.csv", mode="a", index=False)
+        season_df.to_csv("results/processed_games.csv", mode="a", index=False)
 
 
 if __name__ == "__main__":
