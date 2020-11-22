@@ -1,3 +1,4 @@
+import os
 import json
 import logging
 import requests
@@ -38,7 +39,9 @@ class ScheduleCrawler(BaseCrawler):
         return {"sport": sport, "team": team, "season": season, "games": games}
 
     def write_raw_crawl_results(self, sport, season, team, schedule_data):
-        print(schedule_data)
+
+        if not os.path.exists(f"results/{sport}"):
+            os.makedirs(f"results/{sport}")
 
         # file write not currently working for nonexistent jsons
         with open(f"results/{sport}/{season}_{team}.json", "w") as f:
