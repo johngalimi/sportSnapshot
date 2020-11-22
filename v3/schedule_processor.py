@@ -3,6 +3,8 @@ import logging
 import pandas as pd
 from datetime import datetime
 
+from seeder import Seeder
+
 
 class ScheduleProcessor:
 
@@ -145,21 +147,28 @@ if __name__ == "__main__":
 
     schedule_processor = ScheduleProcessor()
 
-    schedules_to_process = [
-        ("basketball", "LAL", 2019),
-        ("basketball", "CLE", 2011),
-        ("hockey", "WSH", 2015),
-        ("hockey", "STL", 2017),
-    ]
+    seeder = Seeder()
+
+    sports = ["hockey", "basketball"]
+    seasons = seeder.get_seasons(base_year=2020, years_back=2)
 
     master_processed_games = []
 
-    for sport, team, season in schedules_to_process:
-        logging.warning(f"---> Started {sport}.{team}.{season}")
+    for sport in sports:
+        teams = seeder.get_teams(sport)
 
-        master_processed_games.extend(schedule_processor.process(sport, team, season))
+        for team_metadata in teams:
+            (team_abbr, team_location, team_name) = team_metadata
 
-        logging.warning(f"---> Finished {sport}.{team}.{season}")
+            for season in seasons:
+
+                logging.warning(f"---> Started {sport}.{team_abbr}.{season}")
+
+                master_processed_games.extend(
+                    schedule_processor.process(sport, team_abbr, season)
+                )
+
+                logging.warning(f"---> Finished {sport}.{team_abbr}.{season}")
 
     schedule_processor.write_processed_games(master_processed_games)
 
