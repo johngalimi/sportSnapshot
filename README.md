@@ -10,7 +10,7 @@ docker run -it sportsnapshot
 
 # second terminal
 docker container list
-docker cp ed47aa1fb1b9:/code/results src/
+docker cp ed47aa1fb1b9:/code/results .
 ```
 
 Sports data crawled, processed, and visualized
