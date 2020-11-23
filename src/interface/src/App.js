@@ -1,5 +1,4 @@
-// import "./App.css";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -13,6 +12,21 @@ const useStyles = makeStyles({
     minWidth: 650,
   },
 });
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
 
 const createGameRecord = (
   league,
@@ -67,26 +81,26 @@ function App() {
           <TableHead>
             <TableRow>
               {columnNames.map((column, idx) => {
-                return <TableCell key={idx}>{column}</TableCell>;
+                return <StyledTableCell key={idx}>{column}</StyledTableCell>;
               })}
             </TableRow>
           </TableHead>
           <TableBody>
-            {
-              gameRecords.map((game, idx) => {
-                return <TableRow key={idx}>
-                  {
-                    Object.keys(game).map((datum, idx) => {
-                      return <TableCell key={idx}>{game[datum]}</TableCell>
-                    })
-                  }
-                </TableRow>
-              })
-            }
+            {gameRecords.map((game, idx) => {
+              return (
+                <StyledTableRow key={idx}>
+                  {Object.keys(game).map((datum, idx) => {
+                    return (
+                      <StyledTableCell key={idx}>{game[datum]}</StyledTableCell>
+                    );
+                  })}
+                </StyledTableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
-    </div >
+    </div>
   );
 }
 
