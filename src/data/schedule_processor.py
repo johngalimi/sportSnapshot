@@ -26,11 +26,11 @@ class ScheduleProcessor:
 
     def get_raw(self, sport, team, season):
 
-        if not os.path.isfile(f"results/{sport}/{season}_{team}.json"):
+        if not os.path.isfile(f"data/results/{sport}/{season}_{team}.json"):
             logging.warning(f"Raw crawl result not available")
             return {}
 
-        with open(f"results/{sport}/{season}_{team}.json") as f:
+        with open(f"data/results/{sport}/{season}_{team}.json") as f:
             raw_data = json.load(f)
 
         return raw_data

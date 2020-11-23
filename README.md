@@ -7,8 +7,8 @@ Sports data crawled, processed, and visualized
 docker build -t sportsnapshot .
 docker run -it sportsnapshot
 
----> python schedule_crawler.py
----> python schedule_processor.py
+---> python data/schedule_crawler.py
+---> python data/schedule_processor.py
 
 # second terminal
 docker container list
