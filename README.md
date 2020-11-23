@@ -1,5 +1,7 @@
 # sportSnapshot
 
+Sports data crawled, processed, and visualized
+
 ```bash
 # first terminal
 docker build -t sportsnapshot .
@@ -10,9 +12,5 @@ docker run -it sportsnapshot
 
 # second terminal
 docker container list
-docker cp ed47aa1fb1b9:/code/results .
+docker cp <container_id>:/code/results .
 ```
-
-Sports data crawled, processed, and visualized
-
-Python (BeautifulSoup, Flask), JavaScript (React)
