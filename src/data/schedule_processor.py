@@ -2,6 +2,7 @@ import os
 import json
 import logging
 import pandas as pd
+import psycopg2 as db
 from datetime import datetime
 
 from seeder import Seeder
@@ -148,6 +149,35 @@ class ScheduleProcessor:
         # need to include headers only at the top when appending
         season_df.to_csv("data/results/processed_games.csv", mode="a", index=False)
 
+        connection = db.connect(
+            database="postgres",
+            user="postgres",
+            password="postgres",
+            host="host.docker.internal",
+            port="5432"
+        )
+
+        cursor = connection.cursor()
+
+        query = """
+            select  feature_id
+            ,feature_name
+            ,sub_feature_id
+            ,sub_feature_name
+            ,is_supported
+            ,is_verified_by
+            ,comments
+            from information_schema.sql_features
+            LIMIT 1000
+        """
+        
+        cursor.execute(query)
+
+        for record in cursor:
+            print(record)
+
+        connection.close()
+        del cursor
 
 if __name__ == "__main__":
 
