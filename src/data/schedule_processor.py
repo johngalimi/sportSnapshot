@@ -146,7 +146,7 @@ class ScheduleProcessor:
 
         # write to csv in "a" (append) mode
         # need to include headers only at the top when appending
-        season_df.to_csv("results/processed_games.csv", mode="a", index=False)
+        season_df.to_csv("data/results/processed_games.csv", mode="a", index=False)
 
 
 if __name__ == "__main__":
