@@ -6,44 +6,42 @@ from pymongo import MongoClient
 
 def connect_mongo(collection_name, database_name):
 
-	print('---->> Connecting to Mongo')
+    print("---->> Connecting to Mongo")
 
-	client = MongoClient('mongodb://localhost:27017')
+    client = MongoClient("mongodb://localhost:27017")
 
-	collection = client[collection_name]
+    collection = client[collection_name]
 
-	database = collection[database_name]
+    database = collection[database_name]
 
-	return client, database
+    return client, database
 
 
 def insert_into_db(database, documents):
 
-	print('---->> Inserting into Mongo')
+    print("---->> Inserting into Mongo")
 
-	results = database.insert_many(documents)
+    results = database.insert_many(documents)
 
-	add_count = 0
+    add_count = 0
 
-	for object_id in results.inserted_ids:
-		add_count += 1
+    for object_id in results.inserted_ids:
+        add_count += 1
 
-	print(f'--> {add_count} documents added')
+    print(f"--> {add_count} documents added")
 
 
 def clear_out_db(database):
 
-	'---->> Deleting from Mongo'
+    "---->> Deleting from Mongo"
 
-	x = database.delete_many({})
+    x = database.delete_many({})
 
-	print(f'--> {x.deleted_count} documents deleted')
+    print(f"--> {x.deleted_count} documents deleted")
 
 
 def close_mongo(client):
 
-	print('---->> Closing Mongo')
+    print("---->> Closing Mongo")
 
-	client.close()
-
-
+    client.close()

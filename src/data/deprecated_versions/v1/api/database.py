@@ -8,21 +8,19 @@ from pymongo import MongoClient
 
 def connect_mongo(collection_name, database_name):
 
-	# print('---->> Connecting to Mongo')
+    # print('---->> Connecting to Mongo')
 
-	client = MongoClient('mongodb://localhost:27017')
+    client = MongoClient("mongodb://localhost:27017")
 
-	collection = client[collection_name]
+    collection = client[collection_name]
 
-	database = collection[database_name]
+    database = collection[database_name]
 
-	return client, database
+    return client, database
 
 
 def close_mongo(client):
 
-	# print('---->> Closing Mongo')
+    # print('---->> Closing Mongo')
 
-	client.close()
-
-
+    client.close()

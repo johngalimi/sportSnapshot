@@ -4,7 +4,8 @@ import psycopg2
 def connect_db(database, user, password, host):
 
     cxn_string = "dbname={} user={} password={} host={}".format(
-            database, user, password, host)
+        database, user, password, host
+    )
 
     conn = psycopg2.connect(cxn_string)
 
@@ -14,7 +15,7 @@ def connect_db(database, user, password, host):
 
 
 def disconnect_db(connection, cursor):
-    
+
     cursor.close()
     connection.close()
 
@@ -23,9 +24,9 @@ def disconnect_db(connection, cursor):
 
 
 def create_tables(connection, cursor):
-    
+
     commands = (
-            """
+        """
             CREATE TABLE IF NOT EXISTS teams (
                 scTeamId INTEGER NOT NULL,
                 scTeamAbbr VARCHAR(5) NOT NULL,
@@ -33,22 +34,22 @@ def create_tables(connection, cursor):
                 PRIMARY KEY (scTeamId)
             )
             """,
-            )
+    )
 
     for command in commands:
         cursor.execute(command)
-    
+
     connection.commit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    db_name = 'sportsnapshot'
-    credential = 'postgres'
-    host = 'localhost'
+    db_name = "sportsnapshot"
+    credential = "postgres"
+    host = "localhost"
 
     cxn, curs = connect_db(db_name, credential, credential, host)
 
     create_tables(cxn, curs)
-    
+
     disconnect_db(cxn, curs)

@@ -89,6 +89,19 @@ class ScheduleProcessor:
 
             return datetime.strptime(date_column_value, "%Y-%m-%d").date()
 
+    def get_point_fields(self, sport, game_data):
+
+        POINTS_TEAM, POINTS_OPPONENT = "team_points", "opponent_points"
+
+        point_column_map = {
+            "basketball": {POINTS_TEAM: "pts", POINTS_OPPONENT: "opp_pts"},
+            "hockey": {POINTS_TEAM: "goals", POINTS_OPPONENT: "opp_goals"},
+        }
+
+        return int(game_data[point_column_map[sport][POINTS_TEAM]]), int(
+            game_data[point_column_map[sport][POINTS_OPPONENT]]
+        )
+
     def process_games(self, season_data):
 
         games = season_data.get("games", [])
@@ -125,14 +138,10 @@ class ScheduleProcessor:
         processed_game["team_name"] = self.get_team_from_abbreviation(sport, team)
         processed_game["opponent_name"] = game_record["opp_name"]
 
-        # we should just be inheriting from a base processor and delegating league-specific logic to child classes
-        if sport == "basketball":
-            processed_game["team_points"] = game_record["pts"]
-            processed_game["opponent_points"] = game_record["opp_pts"]
-
-        elif sport == "hockey":
-            processed_game["team_points"] = game_record["goals"]
-            processed_game["opponent_points"] = game_record["opp_goals"]
+        (
+            processed_game["team_points"],
+            processed_game["opponent_points"],
+        ) = self.get_point_fields(sport, game_record)
 
         return processed_game
 
@@ -145,39 +154,46 @@ class ScheduleProcessor:
     def write_processed_games(self, processed_games):
         season_df = pd.DataFrame(processed_games)
 
+        print(season_df.head())
+
+        print(season_df.info())
+
+        print(season_df.columns)
+
         # write to csv in "a" (append) mode
         # need to include headers only at the top when appending
         season_df.to_csv("data/results/processed_games.csv", mode="a", index=False)
 
-        connection = db.connect(
-            database="postgres",
-            user="postgres",
-            password="postgres",
-            host="host.docker.internal",
-            port="5432"
-        )
+        # connection = db.connect(
+        #     database="postgres",
+        #     user="postgres",
+        #     password="postgres",
+        #     host="host.docker.internal",
+        #     port="5432"
+        # )
 
-        cursor = connection.cursor()
+        # cursor = connection.cursor()
 
-        query = """
-            select  feature_id
-            ,feature_name
-            ,sub_feature_id
-            ,sub_feature_name
-            ,is_supported
-            ,is_verified_by
-            ,comments
-            from information_schema.sql_features
-            LIMIT 1000
-        """
-        
-        cursor.execute(query)
+        # query = """
+        #     select  feature_id
+        #     ,feature_name
+        #     ,sub_feature_id
+        #     ,sub_feature_name
+        #     ,is_supported
+        #     ,is_verified_by
+        #     ,comments
+        #     from information_schema.sql_features
+        #     LIMIT 1000
+        # """
 
-        for record in cursor:
-            print(record)
+        # cursor.execute(query)
 
-        connection.close()
-        del cursor
+        # for record in cursor:
+        #     print(record)
+
+        # connection.close()
+        # del cursor
+
 
 if __name__ == "__main__":
 
