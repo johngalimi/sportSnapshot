@@ -183,7 +183,7 @@ class ScheduleProcessor:
         create_tbl_game = """
             DROP TABLE IF EXISTS tblGame;
             CREATE TABLE tblGame (
-                ID serial PRIMARY KEY,
+                id serial PRIMARY KEY,
                 league_name VARCHAR(3) NOT NULL,
                 season VARCHAR(8) NOT NULL,
                 game_date DATE NOT NULL,
