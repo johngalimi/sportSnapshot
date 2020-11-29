@@ -8,7 +8,7 @@ class Seeder:
         return [season for season in range(base_year - years_back, base_year)]
 
     def get_teams(self, sport):
-        
+
         connection = db.connect(
             database="postgres",
             user="postgres",
@@ -26,13 +26,17 @@ class Seeder:
                 team_name
             FROM tblTeam
             WHERE league_id = {}
-        """.format({"basketball": 1, "hockey": 2}[sport])
+        """.format(
+            {"basketball": 1, "hockey": 2}[sport]
+        )
 
         cursor.execute(select_teams_by_sport)
 
         team_list = [team for team in cursor]
 
-        team_dict = {_abbr: f"{_location} {_name}" for _abbr, _location, _name in team_list}
+        team_dict = {
+            _abbr: f"{_location} {_name}" for _abbr, _location, _name in team_list
+        }
 
         self.team_lookup[sport].update(team_dict)
 

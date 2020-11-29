@@ -148,10 +148,16 @@ class ScheduleProcessor:
             processed_game["opponent_points"],
         ) = self.get_point_fields(sport, game_record)
 
-        uuid_component_time = int(datetime.combine(processed_game['game_date'], datetime.min.time()).timestamp())
-        uuid_component_points = processed_game['team_points'] + processed_game['opponent_points']
+        uuid_component_time = int(
+            datetime.combine(
+                processed_game["game_date"], datetime.min.time()
+            ).timestamp()
+        )
+        uuid_component_points = (
+            processed_game["team_points"] + processed_game["opponent_points"]
+        )
 
-        processed_game['game_uuid'] = f"{uuid_component_time}-{uuid_component_points}"
+        processed_game["game_uuid"] = f"{uuid_component_time}-{uuid_component_points}"
 
         return processed_game
 
@@ -202,10 +208,7 @@ class ScheduleProcessor:
 
         game_columns = games[0].keys()
 
-        game_values = [
-            [data_point for data_point in game.values()]
-            for game in games
-        ]
+        game_values = [[data_point for data_point in game.values()] for game in games]
 
         insert_tbl_game = "INSERT INTO tblGame ({}) VALUES %s".format(
             ",".join(game_columns)
@@ -225,6 +228,7 @@ class ScheduleProcessor:
         self.write_games_to_csv(processed_games)
 
         # self.write_games_to_db(processed_games)
+
 
 if __name__ == "__main__":
 
