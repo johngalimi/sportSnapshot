@@ -77,9 +77,17 @@ if __name__ == "__main__":
 
     seasons = seasons[0:2]
 
+    # seeder.get_teams()
+
+    print(seeder.TEAMS)
+
+    seeder.populate()
+
+    print(seeder.LEAGUES)
+
     for sport in SPORTS_TO_CRAWL:
 
-        teams = seeder.get_teams(sport)
+        teams = seeder.get_teams_by_sport(sport)
 
         teams = teams[0:3]
 
