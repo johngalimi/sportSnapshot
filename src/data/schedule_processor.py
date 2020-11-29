@@ -3,7 +3,9 @@ import json
 import logging
 import pandas as pd
 import psycopg2 as db
+
 from datetime import datetime
+from psycopg2.extras import execute_values
 
 from seeder import Seeder
 
@@ -152,17 +154,17 @@ class ScheduleProcessor:
         return processed_games
 
     def write_processed_games(self, processed_games):
-        season_df = pd.DataFrame(processed_games)
+        # season_df = pd.DataFrame(processed_games)
 
-        print(season_df.head())
+        # print(season_df.head())
 
-        print(season_df.info())
+        # print(season_df.info())
 
-        print(season_df.columns)
+        # print(season_df.columns)
 
         # write to csv in "a" (append) mode
         # need to include headers only at the top when appending
-        season_df.to_csv("data/results/processed_games.csv", mode="a", index=False)
+        # season_df.to_csv("data/results/processed_games.csv", mode="a", index=False)
 
         connection = db.connect(
             database="postgres",
@@ -175,7 +177,8 @@ class ScheduleProcessor:
         cursor = connection.cursor()
 
         create_tbl_game = """
-            CREATE TABLE IF NOT EXISTS tblGame (
+            DROP TABLE IF EXISTS tblGame;
+            CREATE TABLE tblGame (
                 ID serial PRIMARY KEY,
                 league_name VARCHAR(3) NOT NULL,
                 season VARCHAR(8) NOT NULL,
@@ -190,10 +193,27 @@ class ScheduleProcessor:
         """
 
         cursor.execute(create_tbl_game)
+
         connection.commit()
 
-        # for record in cursor:
-        #     print(record)
+        game_columns = processed_games[0].keys()
+
+        game_values = [[data_point for data_point in game.values()] for game in processed_games[0:10]]
+
+        insert_tbl_game = "INSERT INTO tblGame ({}) VALUES %s".format(",".join(game_columns))
+
+        execute_values(cursor, insert_tbl_game, game_values)
+
+        connection.commit()
+
+        select_tbl_game = """
+        select  * from tblGame limit 100
+        """
+
+        cursor.execute(select_tbl_game)
+
+        for record in cursor:
+            print(record)
 
         connection.close()
         cursor.close()
