@@ -164,35 +164,39 @@ class ScheduleProcessor:
         # need to include headers only at the top when appending
         season_df.to_csv("data/results/processed_games.csv", mode="a", index=False)
 
-        # connection = db.connect(
-        #     database="postgres",
-        #     user="postgres",
-        #     password="postgres",
-        #     host="host.docker.internal",
-        #     port="5432"
-        # )
+        connection = db.connect(
+            database="postgres",
+            user="postgres",
+            password="postgres",
+            host="host.docker.internal",
+            port="5432"
+        )
 
-        # cursor = connection.cursor()
+        cursor = connection.cursor()
 
-        # query = """
-        #     select  feature_id
-        #     ,feature_name
-        #     ,sub_feature_id
-        #     ,sub_feature_name
-        #     ,is_supported
-        #     ,is_verified_by
-        #     ,comments
-        #     from information_schema.sql_features
-        #     LIMIT 1000
-        # """
+        create_tbl_game = """
+            CREATE TABLE IF NOT EXISTS tblGame (
+                ID serial PRIMARY KEY,
+                league_name VARCHAR(3) NOT NULL,
+                season VARCHAR(8) NOT NULL,
+                game_date DATE NOT NULL,
+                is_team_home BOOLEAN NOT NULL,
+                is_overtime BOOLEAN NOT NULL,
+                team_name VARCHAR(50) NOT NULL,
+                opponent_name VARCHAR(50) NOT NULL,
+                team_points INT NOT NULL,
+                opponent_points INT NOT NULL
+            );
+        """
 
-        # cursor.execute(query)
+        cursor.execute(create_tbl_game)
+        connection.commit()
 
         # for record in cursor:
         #     print(record)
 
-        # connection.close()
-        # del cursor
+        connection.close()
+        cursor.close()
 
 
 if __name__ == "__main__":
