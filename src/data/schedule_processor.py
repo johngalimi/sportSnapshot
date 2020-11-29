@@ -8,6 +8,7 @@ from datetime import datetime
 from psycopg2.extras import execute_values
 
 from seeder import Seeder
+from config import BASE_YEAR, YEARS_BACK, SPORTS_TO_CRAWL
 
 
 class ScheduleProcessor:
@@ -100,8 +101,12 @@ class ScheduleProcessor:
             "hockey": {POINTS_TEAM: "goals", POINTS_OPPONENT: "opp_goals"},
         }
 
-        return int(game_data[point_column_map[sport][POINTS_TEAM]]), int(
-            game_data[point_column_map[sport][POINTS_OPPONENT]]
+        team_points = game_data[point_column_map[sport][POINTS_TEAM]]
+        opponent_points = game_data[point_column_map[sport][POINTS_OPPONENT]]
+
+        return (
+            int(team_points) if team_points else 0,
+            int(opponent_points) if opponent_points else 0,
         )
 
     def process_games(self, season_data):
@@ -154,24 +159,23 @@ class ScheduleProcessor:
         return processed_games
 
     def write_processed_games(self, processed_games):
-        # season_df = pd.DataFrame(processed_games)
+        logging.warning(
+            f"Writing processed games, expected row count: {len(processed_games)}"
+        )
 
-        # print(season_df.head())
-
-        # print(season_df.info())
-
-        # print(season_df.columns)
+        # load into df to prepare for csv insert
+        season_df = pd.DataFrame(processed_games)
 
         # write to csv in "a" (append) mode
         # need to include headers only at the top when appending
-        # season_df.to_csv("data/results/processed_games.csv", mode="a", index=False)
+        season_df.to_csv("data/results/processed_games.csv", mode="a", index=False)
 
         connection = db.connect(
             database="postgres",
             user="postgres",
             password="postgres",
             host="host.docker.internal",
-            port="5432"
+            port="5432",
         )
 
         cursor = connection.cursor()
@@ -193,27 +197,21 @@ class ScheduleProcessor:
         """
 
         cursor.execute(create_tbl_game)
-
         connection.commit()
 
         game_columns = processed_games[0].keys()
 
-        game_values = [[data_point for data_point in game.values()] for game in processed_games[0:10]]
+        game_values = [
+            [data_point for data_point in game.values()]
+            for game in processed_games
+        ]
 
-        insert_tbl_game = "INSERT INTO tblGame ({}) VALUES %s".format(",".join(game_columns))
+        insert_tbl_game = "INSERT INTO tblGame ({}) VALUES %s".format(
+            ",".join(game_columns)
+        )
 
         execute_values(cursor, insert_tbl_game, game_values)
-
         connection.commit()
-
-        select_tbl_game = """
-        select  * from tblGame limit 100
-        """
-
-        cursor.execute(select_tbl_game)
-
-        for record in cursor:
-            print(record)
 
         connection.close()
         cursor.close()
@@ -228,12 +226,11 @@ if __name__ == "__main__":
 
     seeder = Seeder()
 
-    sports = ["hockey", "basketball"]
-    seasons = seeder.get_seasons(base_year=2020, years_back=2)
+    seasons = seeder.get_seasons(base_year=BASE_YEAR, years_back=YEARS_BACK)
 
     master_processed_games = []
 
-    for sport in sports:
+    for sport in SPORTS_TO_CRAWL:
         teams = seeder.get_teams(sport)
 
         for team_metadata in teams:

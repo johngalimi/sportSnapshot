@@ -7,6 +7,7 @@ from datetime import datetime
 
 from base_crawler import BaseCrawler
 from seeder import Seeder
+from config import BASE_YEAR, YEARS_BACK, SPORTS_TO_CRAWL
 
 
 class ScheduleCrawler(BaseCrawler):
@@ -73,9 +74,9 @@ if __name__ == "__main__":
     seeder = Seeder()
 
     sports = ["hockey", "basketball"]
-    seasons = seeder.get_seasons(base_year=2020, years_back=2)
+    seasons = seeder.get_seasons(base_year=BASE_YEAR, years_back=YEARS_BACK)
 
-    for sport in sports:
+    for sport in SPORTS_TO_CRAWL:
         teams = seeder.get_teams(sport)
 
         for team_metadata in teams:
@@ -84,7 +85,12 @@ if __name__ == "__main__":
             for season in seasons:
                 logging.warning(f"---> Started {sport}.{team_abbr}.{season}")
 
-                schedule_crawler.crawl(sport, team_abbr, season, team_metadata)
+                try:
+                    schedule_crawler.crawl(sport, team_abbr, season, team_metadata)
+
+                except Exception as e:
+                    logging.warning(f"FAILED TO CRAWL, ERROR {e}")
+                    pass
 
                 logging.warning(f"---> Finished {sport}.{team_abbr}.{season}")
 
