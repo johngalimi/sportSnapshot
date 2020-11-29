@@ -44,11 +44,7 @@ class ScheduleProcessor:
         return league_lookup.get(sport, None)
 
     def get_team_from_abbreviation(self, sport, team):
-
-        # TODO -- this should happen once at instantiation of processor rather than on every individual result
-        team_lookup = self.seeder.construct_team_lookup(sport)
-
-        return team_lookup[team]
+        return self.seeder.team_lookup[sport][team]
 
     def get_season_string(self, season):
         return f"{season-1}-{season-2000}"
@@ -124,6 +120,8 @@ class ScheduleProcessor:
 
     def process_game(self, sport, team, season, game_record):
 
+        # TODO -- process win streak
+
         # define processed game skeleton object
         processed_game = self.PROCESSED_GAME.copy()
 
@@ -150,6 +148,11 @@ class ScheduleProcessor:
             processed_game["opponent_points"],
         ) = self.get_point_fields(sport, game_record)
 
+        uuid_component_time = int(datetime.combine(processed_game['game_date'], datetime.min.time()).timestamp())
+        uuid_component_points = processed_game['team_points'] + processed_game['opponent_points']
+
+        processed_game['game_uuid'] = f"{uuid_component_time}-{uuid_component_points}"
+
         return processed_game
 
     def process(self, sport, team, season):
@@ -158,18 +161,15 @@ class ScheduleProcessor:
 
         return processed_games
 
-    def write_processed_games(self, processed_games):
-        logging.warning(
-            f"Writing processed games, expected row count: {len(processed_games)}"
-        )
-
+    def write_games_to_csv(self, games):
         # load into df to prepare for csv insert
-        season_df = pd.DataFrame(processed_games)
+        season_df = pd.DataFrame(games)
 
         # write to csv in "a" (append) mode
         # need to include headers only at the top when appending
         season_df.to_csv("data/results/processed_games.csv", mode="a", index=False)
 
+    def write_games_to_db(self, games):
         connection = db.connect(
             database="postgres",
             user="postgres",
@@ -192,18 +192,19 @@ class ScheduleProcessor:
                 team_name VARCHAR(50) NOT NULL,
                 opponent_name VARCHAR(50) NOT NULL,
                 team_points INT NOT NULL,
-                opponent_points INT NOT NULL
+                opponent_points INT NOT NULL,
+                game_uuid VARCHAR (25) NOT NULL
             );
         """
 
         cursor.execute(create_tbl_game)
         connection.commit()
 
-        game_columns = processed_games[0].keys()
+        game_columns = games[0].keys()
 
         game_values = [
             [data_point for data_point in game.values()]
-            for game in processed_games
+            for game in games
         ]
 
         insert_tbl_game = "INSERT INTO tblGame ({}) VALUES %s".format(
@@ -216,6 +217,14 @@ class ScheduleProcessor:
         connection.close()
         cursor.close()
 
+    def write_processed_games(self, processed_games):
+        logging.warning(
+            f"Writing processed games, expected row count: {len(processed_games)}"
+        )
+
+        self.write_games_to_csv(processed_games)
+
+        # self.write_games_to_db(processed_games)
 
 if __name__ == "__main__":
 
@@ -228,10 +237,14 @@ if __name__ == "__main__":
 
     seasons = seeder.get_seasons(base_year=BASE_YEAR, years_back=YEARS_BACK)
 
+    seasons = seasons[0:2]
+
     master_processed_games = []
 
     for sport in SPORTS_TO_CRAWL:
         teams = seeder.get_teams(sport)
+
+        teams = teams[0:3]
 
         for team_metadata in teams:
             (team_abbr, team_location, team_name) = team_metadata

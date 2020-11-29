@@ -73,11 +73,15 @@ if __name__ == "__main__":
 
     seeder = Seeder()
 
-    sports = ["hockey", "basketball"]
     seasons = seeder.get_seasons(base_year=BASE_YEAR, years_back=YEARS_BACK)
 
+    seasons = seasons[0:2]
+
     for sport in SPORTS_TO_CRAWL:
+
         teams = seeder.get_teams(sport)
+
+        teams = teams[0:3]
 
         for team_metadata in teams:
             (team_abbr, team_location, team_name) = team_metadata

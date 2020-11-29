@@ -1,20 +1,42 @@
-from constants import NBA_TEAMS, NHL_TEAMS
+import psycopg2 as db
 
 
 class Seeder:
-
-    TEAMS = {"basketball": NBA_TEAMS, "hockey": NHL_TEAMS}
+    team_lookup = {"basketball": {}, "hockey": {}}
 
     def get_seasons(self, base_year, years_back):
         return [season for season in range(base_year - years_back, base_year)]
 
     def get_teams(self, sport):
-        return self.TEAMS.get(sport, [])
+        
+        connection = db.connect(
+            database="postgres",
+            user="postgres",
+            password="postgres",
+            host="host.docker.internal",
+            port="5432",
+        )
 
-    def construct_team_lookup(self, sport):
-        teams = self.TEAMS.get(sport, None)
+        cursor = connection.cursor()
 
-        if teams is None:
-            return {}
+        select_teams_by_sport = """
+            SELECT
+                team_abbr,
+                team_location,
+                team_name
+            FROM tblTeam
+            WHERE league_id = {}
+        """.format({"basketball": 1, "hockey": 2}[sport])
 
-        return {_abbr: f"{_location} {_name}" for _abbr, _location, _name in teams}
+        cursor.execute(select_teams_by_sport)
+
+        team_list = [team for team in cursor]
+
+        team_dict = {_abbr: f"{_location} {_name}" for _abbr, _location, _name in team_list}
+
+        self.team_lookup[sport].update(team_dict)
+
+        connection.close()
+        cursor.close()
+
+        return team_list
