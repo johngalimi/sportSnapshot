@@ -11,6 +11,8 @@ from config import BASE_YEAR, YEARS_BACK, SPORTS_TO_CRAWL
 
 
 class ScheduleCrawler(BaseCrawler):
+    _seeder = Seeder()
+
     def construct_url(self, sport, team, season):
         return (
             f"https://www.{sport}-reference.com/teams/{team}/{str(season)}_games.html"
@@ -48,7 +50,7 @@ class ScheduleCrawler(BaseCrawler):
         with open(f"data/results/{sport}/{season}_{team}.json", "w") as f:
             json.dump(schedule_data, f)
 
-    def crawl(self, sport, team, season, team_metadata):
+    def _crawl(self, sport, team, season, team_metadata):
         schedule_url = self.construct_url(sport, team, season)
 
         blob = self.get_html(schedule_url)
@@ -63,6 +65,40 @@ class ScheduleCrawler(BaseCrawler):
 
         self.write_raw_crawl_results(sport, season, team, schedule_dict)
 
+    def construct_schedule_url(self, team_id, season):
+
+        league_sport = self._seeder.league_map[
+            self._seeder.team_map[team_id]["league_id"]
+        ]
+        team_abbr = self._seeder.team_map[team_id]["team_abbr"]
+
+        schedule_url = f"https://www.{league_sport}-reference.com/teams/{team_abbr}/{str(season)}_games.html"
+
+        return schedule_url
+
+    def crawl(self, team_id, season):
+
+        schedule_url = self.construct_schedule_url(team_id, season)
+
+        blob = self.get_html(schedule_url)
+        text = self.get_response_text(blob)
+        soup = self.get_soup(text)
+
+        raw_game_table = self.get_game_table(soup)
+
+        parsed_games = self.parse_game_table(raw_game_table)
+
+        schedule_payload = {"team_id": team_id, "season": season, "games": parsed_games}
+
+        results_directory = f"data/results"
+
+        if not os.path.exists(results_directory):
+            os.makedirs(results_directory)
+
+        # file write not currently working for nonexistent jsons
+        with open(f"{results_directory}/{season}_{team_id}.json", "w") as f:
+            json.dump(schedule_payload, f)
+
 
 if __name__ == "__main__":
 
@@ -71,39 +107,19 @@ if __name__ == "__main__":
 
     schedule_crawler = ScheduleCrawler()
 
-    seeder = Seeder()
+    schedule_crawler._seeder.get_seasons(base_year=BASE_YEAR, years_back=YEARS_BACK)
+    schedule_crawler._seeder.construct_mappings()
 
-    seasons = seeder.get_seasons(base_year=BASE_YEAR, years_back=YEARS_BACK)
+    for team_id in schedule_crawler._seeder.team_map:
+        for season in schedule_crawler._seeder.seasons:
+            logging.warning(f"---> Started {team_id}.{season}")
 
-    seasons = seasons[0:2]
-
-    # seeder.get_teams()
-
-    print(seeder.TEAMS)
-
-    seeder.populate()
-
-    print(seeder.LEAGUES)
-
-    for sport in SPORTS_TO_CRAWL:
-
-        teams = seeder.get_teams_by_sport(sport)
-
-        teams = teams[0:3]
-
-        for team_metadata in teams:
-            (team_abbr, team_location, team_name) = team_metadata
-
-            for season in seasons:
-                logging.warning(f"---> Started {sport}.{team_abbr}.{season}")
-
-                try:
-                    schedule_crawler.crawl(sport, team_abbr, season, team_metadata)
-
-                except Exception as e:
-                    logging.warning(f"FAILED TO CRAWL, ERROR {e}")
-                    pass
-
-                logging.warning(f"---> Finished {sport}.{team_abbr}.{season}")
+            try:
+                schedule_crawler.crawl(team_id, season)
+            except Exception as e:
+                logging.warning(f"FAILED TO CRAWL, ERROR {e}")
+                pass            
+            
+            logging.warning(f"---> Finished {team_id}.{season}")
 
     logging.warning(f"Crawling complete, time elapsed: {datetime.now() - start_time}")

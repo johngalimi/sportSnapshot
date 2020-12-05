@@ -7,15 +7,14 @@ import psycopg2 as db
 from datetime import datetime
 from psycopg2.extras import execute_values
 
+import config
 from seeder import Seeder
-from config import BASE_YEAR, YEARS_BACK, SPORTS_TO_CRAWL
 
 
 class ScheduleProcessor:
+    _seeder = Seeder()
 
-    seeder = Seeder()
 
-    # define processed game skeleton object
     PROCESSED_GAME = {
         "league_name": None,
         "season": None,
@@ -26,6 +25,18 @@ class ScheduleProcessor:
         "opponent_name": None,
         "team_points": None,
         "opponent_points": None,
+    }
+
+    # define processed game skeleton object
+    GAME = {
+        "game_date": None,
+        "game_season": None,
+        "team_id": None,
+        "opponent_id": None,
+        "team_points": None,
+        "opponent_points": None,
+        "is_team_home": None,
+        "is_overtime": None,
     }
 
     def get_raw(self, sport, team, season):
@@ -161,9 +172,67 @@ class ScheduleProcessor:
 
         return processed_game
 
-    def process(self, sport, team, season):
+    def _process(self, sport, team, season):
         raw_data = self.get_raw(sport, team, season)
         processed_games = self.process_games(raw_data)
+
+        return processed_games
+
+    def get_raw_crawl_result(self, team_id, season):
+
+        raw_crawl_file_path = f"data/results/{season}_{team_id}.json"
+
+        if not os.path.isfile(raw_crawl_file_path):
+            logging.warning(f"Raw crawl result not available")
+            return {}
+
+        with open(raw_crawl_file_path) as f:
+            raw_data = json.load(f)
+
+        return raw_data
+
+    def process_raw_game(self, team_id, season, game_record):
+
+        processed_game = self.GAME.copy()
+
+        sport = self._seeder.league_map[self._seeder.team_map[team_id]["league_id"]]
+
+        # get game date fields
+        processed_game["game_date"] = self.get_game_date(
+            sport, game_record["date_game"]
+        )
+        processed_game["game_season"] = season
+
+        # get bool fields
+        processed_game["is_team_home"] = self.get_is_team_home(
+            game_record["game_location"]
+        )
+        processed_game["is_overtime"] = self.get_is_overtime(
+            sport, game_record["overtimes"]
+        )
+
+        (
+            processed_game["team_points"],
+            processed_game["opponent_points"],
+        ) = self.get_point_fields(sport, game_record)
+
+        processed_game["team_id"] = team_id
+
+        processed_game["opponent_id"] = self._seeder.normalized_team_name_map[
+            game_record["opp_name"].replace(" ", "").lower()
+        ]
+
+        return processed_game
+
+    def process(self, team_id, season):
+
+        raw_crawl = self.get_raw_crawl_result(team_id, season)
+
+        games = raw_crawl.get("games", [])
+
+        processed_games = [
+            self.process_raw_game(team_id, season, game) for game in games
+        ]
 
         return processed_games
 
@@ -177,48 +246,29 @@ class ScheduleProcessor:
 
     def write_games_to_db(self, games):
         connection = db.connect(
-            database="postgres",
-            user="postgres",
-            password="postgres",
-            host="host.docker.internal",
-            port="5432",
+            database=config.DB_database,
+            user=config.DB_user,
+            password=config.DB_password,
+            host=config.DB_host,
+            port=config.DB_port,
         )
 
         cursor = connection.cursor()
-
-        create_tbl_game = """
-            DROP TABLE IF EXISTS tblGame;
-            CREATE TABLE tblGame (
-                id serial PRIMARY KEY,
-                league_name VARCHAR(3) NOT NULL,
-                season VARCHAR(8) NOT NULL,
-                game_date DATE NOT NULL,
-                is_team_home BOOLEAN NOT NULL,
-                is_overtime BOOLEAN NOT NULL,
-                team_name VARCHAR(50) NOT NULL,
-                opponent_name VARCHAR(50) NOT NULL,
-                team_points INT NOT NULL,
-                opponent_points INT NOT NULL,
-                game_uuid VARCHAR (25) NOT NULL
-            );
-        """
-
-        cursor.execute(create_tbl_game)
-        connection.commit()
 
         game_columns = games[0].keys()
 
         game_values = [[data_point for data_point in game.values()] for game in games]
 
-        insert_tbl_game = "INSERT INTO tblGame ({}) VALUES %s".format(
+        insert_tbl_game_raw = "INSERT INTO tblGameRaw ({}) VALUES %s".format(
             ",".join(game_columns)
         )
 
-        execute_values(cursor, insert_tbl_game, game_values)
+        execute_values(cursor, insert_tbl_game_raw, game_values)
         connection.commit()
 
         connection.close()
         cursor.close()
+
 
     def write_processed_games(self, processed_games):
         logging.warning(
@@ -227,8 +277,7 @@ class ScheduleProcessor:
 
         self.write_games_to_csv(processed_games)
 
-        # self.write_games_to_db(processed_games)
-
+        self.write_games_to_db(processed_games)
 
 if __name__ == "__main__":
 
@@ -237,33 +286,22 @@ if __name__ == "__main__":
 
     schedule_processor = ScheduleProcessor()
 
-    seeder = Seeder()
-
-    seasons = seeder.get_seasons(base_year=BASE_YEAR, years_back=YEARS_BACK)
-
-    seasons = seasons[0:2]
-
-    seeder.get_teams()
+    schedule_processor._seeder.get_seasons(base_year=config.BASE_YEAR, years_back=config.YEARS_BACK)
+    schedule_processor._seeder.construct_mappings()
 
     master_processed_games = []
 
-    for sport in SPORTS_TO_CRAWL:
-        teams = seeder.get_teams_by_sport(sport)
+    for team_id in schedule_processor._seeder.team_map:
+        for season in schedule_processor._seeder.seasons:
+            logging.warning(f"---> Started {team_id}.{season}")
 
-        teams = teams[0:3]
+            try:
+                master_processed_games.extend(schedule_processor.process(team_id, season))
+            except Exception as e:
+                logging.warning(f"FAILED TO PROCESS, ERROR {e}")
+                pass
 
-        for team_metadata in teams:
-            (team_abbr, team_location, team_name) = team_metadata
-
-            for season in seasons:
-
-                logging.warning(f"---> Started {sport}.{team_abbr}.{season}")
-
-                master_processed_games.extend(
-                    schedule_processor.process(sport, team_abbr, season)
-                )
-
-                logging.warning(f"---> Finished {sport}.{team_abbr}.{season}")
+            logging.warning(f"---> Finished {team_id}.{season}")
 
     schedule_processor.write_processed_games(master_processed_games)
 

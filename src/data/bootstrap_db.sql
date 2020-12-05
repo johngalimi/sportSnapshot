@@ -2,10 +2,10 @@ DROP TABLE IF EXISTS tblLeague;
 CREATE TABLE tblLeague (
     id serial PRIMARY KEY,
     league_abbr VARCHAR (4) NOT NULL,
-    sport_name VARCHAR (10) NOT NULL
+    league_sport VARCHAR (10) NOT NULL
 );
 
-INSERT INTO tblLeague (league_abbr, sport_name) VALUES
+INSERT INTO tblLeague (league_abbr, league_sport) VALUES
     ('NBA', 'basketball'),
     ('NHL', 'hockey')
 ;
@@ -13,10 +13,10 @@ INSERT INTO tblLeague (league_abbr, sport_name) VALUES
 DROP TABLE IF EXISTS tblTeam;
 CREATE TABLE tblTeam (
     id serial PRIMARY KEY,
-    league_id INT NOT NULL,
     team_abbr VARCHAR (5) NOT NULL,
     team_location VARCHAR (50) NOT NULL,
-    team_name VARCHAR (50) NOT NULL
+    team_name VARCHAR (50) NOT NULL,
+    league_id INT NOT NULL
 );
 
 INSERT INTO tblTeam (league_id, team_abbr, team_location, team_name) VALUES 
@@ -83,13 +83,30 @@ INSERT INTO tblTeam (league_id, team_abbr, team_location, team_name) VALUES
     (2, 'SJS', 'San Jose', 'Sharks')
 ;
 
-SELECT 
-    team.id,
+DROP TABLE IF EXISTS tblGameRaw;
+CREATE TABLE tblGameRaw (
+    id serial PRIMARY KEY,
+    game_date DATE NOT NULL,
+    team_id INT NOT NULL,
+    opponent_id INT NOT NULL,
+    team_points INT NOT NULL,
+    opponent_points INT NOT NULL,
+    is_team_home BOOLEAN NOT NULL,
+    is_overtime BOOLEAN NOT NULL
+);
+
+SELECT
+    league.league_abbr,
+    game.game_season,
+    game.game_date,
     team.team_abbr,
-    team.team_location,
-    team.team_name,
-    league.league_abbr 
-FROM tblTeam team
+    opponent.team_abbr AS opponent_abbr,
+    game.team_points,
+    game.opponent_points
+FROM tblGameRaw game
+INNER JOIN tblTeam team
+    ON game.team_id = team.id
+INNER JOIN tblTeam opponent
+    ON game.opponent_id = opponent.id
 INNER JOIN tblLeague league
     ON team.league_id = league.id
-;

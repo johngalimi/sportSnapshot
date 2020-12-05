@@ -1,15 +1,72 @@
 import psycopg2 as db
-
+import config
 
 class Seeder:
-    team_lookup = {"basketball": {}, "hockey": {}}
+    def __init__(self):
+        self.team_map = {}
+        self.normalized_team_name_map = {}
+        self.league_map = {}
+        self.seasons = []
 
-    TEAMS = {"basketball": {}, "hockey": {}}
+    # team_lookup = {"basketball": {}, "hockey": {}}
 
-    LEAGUES = {}
+    # TEAMS = {"basketball": {}, "hockey": {}}
+
+    # LEAGUES = {}
+
+    # seasons = []
+    # league_map = {}
+    # team_map = {}
 
     def get_seasons(self, base_year, years_back):
-        return [season for season in range(base_year - years_back, base_year)]
+        self.seasons = [season for season in range(base_year - years_back, base_year)]
+
+    def construct_mappings(self):
+
+        connection = db.connect(
+            database=config.DB_database,
+            user=config.DB_user,
+            password=config.DB_password,
+            host=config.DB_host,
+            port=config.DB_port,
+        )
+
+        cursor = connection.cursor()
+
+        select_leagues = """
+            SELECT
+                league.id,
+                league.league_sport
+            FROM tblLeague league;
+        """
+
+        cursor.execute(select_leagues)
+
+        for league in cursor:
+            (league_id, league_sport) = league
+            self.league_map[league_id] = league_sport
+
+        select_teams = """
+            SELECT
+                team.id,
+                team.team_abbr,
+                team.league_id,
+                team.team_location,
+                team.team_name
+            FROM tblTeam team;
+        """
+
+        cursor.execute(select_teams)
+
+        for team in cursor:
+            (team_id, team_abbr, league_id, team_location, team_name) = team
+            self.team_map[team_id] = {"team_abbr": team_abbr, "league_id": league_id}
+
+            lowercase_team_key = f"{team_location}{team_name}".replace(" ", "").lower()
+            self.normalized_team_name_map[lowercase_team_key] = team_id
+
+        connection.close()
+        cursor.close()
 
     def populate(self):
         connection = db.connect(
@@ -26,7 +83,7 @@ class Seeder:
             SELECT
                 league.id,
                 league.league_abbr,
-                league.sport_name
+                league.league_sport
             FROM tblLeague league;
         """
 
@@ -34,11 +91,7 @@ class Seeder:
 
         for league in cursor:
             (_id, _abbr, _sport) = league
-            self.LEAGUES[_id] = {
-                "sport": _sport,
-                "abbr": _abbr,
-                "teams": {} 
-            }
+            self.LEAGUES[_id] = {"sport": _sport, "abbr": _abbr, "teams": {}}
 
         select_teams = """
             SELECT
@@ -68,7 +121,10 @@ class Seeder:
             SELECT
                 team.id AS team_id,
                 team.team_abbr,
-                league.sport_name
+                team.team_location,
+                team.team_name,
+                league.league_sport,
+                team.league_id
             FROM tblTeam team
             INNER JOIN tblLeague league
                 ON team.league_id = league.id;
@@ -77,15 +133,20 @@ class Seeder:
         cursor.execute(select_teams)
 
         for team in cursor:
-            (team_id, team_abbr, team_location, team_name, league_id, sport_name) = team
-            
-            self.TEAMS[sport_name][team_abbr] = {
+            (
+                team_id,
+                team_abbr,
+                team_location,
+                team_name,
+                league_sport,
+                league_id,
+            ) = team
+
+            self.TEAMS[league_sport][team_abbr] = {
                 "id": team_id,
                 "name": f"{team_location} {team_name}",
-                "league_id": league_id
+                "league_id": league_id,
             }
-
-
 
         # team_list = [team for team in cursor]
 
