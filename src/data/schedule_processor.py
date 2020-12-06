@@ -14,19 +14,6 @@ from seeder import Seeder
 class ScheduleProcessor:
     _seeder = Seeder()
 
-
-    PROCESSED_GAME = {
-        "league_name": None,
-        "season": None,
-        "game_date": None,
-        "is_team_home": None,
-        "is_overtime": None,
-        "team_name": None,
-        "opponent_name": None,
-        "team_points": None,
-        "opponent_points": None,
-    }
-
     # define processed game skeleton object
     GAME = {
         "game_date": None,
@@ -38,27 +25,6 @@ class ScheduleProcessor:
         "is_team_home": None,
         "is_overtime": None,
     }
-
-    def get_raw(self, sport, team, season):
-
-        if not os.path.isfile(f"data/results/{sport}/{season}_{team}.json"):
-            logging.warning(f"Raw crawl result not available")
-            return {}
-
-        with open(f"data/results/{sport}/{season}_{team}.json") as f:
-            raw_data = json.load(f)
-
-        return raw_data
-
-    def get_league_from_sport(self, sport):
-        league_lookup = {"basketball": "NBA", "hockey": "NHL"}
-        return league_lookup.get(sport, None)
-
-    def get_team_from_abbreviation(self, sport, team):
-        return self.seeder.team_lookup[sport][team]
-
-    def get_season_string(self, season):
-        return f"{season-1}-{season-2000}"
 
     def get_is_team_home(self, location_column_value):
         return "@" not in location_column_value
@@ -115,68 +81,6 @@ class ScheduleProcessor:
             int(team_points) if team_points else 0,
             int(opponent_points) if opponent_points else 0,
         )
-
-    def process_games(self, season_data):
-
-        games = season_data.get("games", [])
-
-        processed_games = [
-            self.process_game(
-                season_data["sport"], season_data["team"], season_data["season"], game
-            )
-            for game in games
-        ]
-
-        return processed_games
-
-    def process_game(self, sport, team, season, game_record):
-
-        # TODO -- process win streak
-
-        # define processed game skeleton object
-        processed_game = self.PROCESSED_GAME.copy()
-
-        # get game date
-        processed_game["game_date"] = self.get_game_date(
-            sport, game_record["date_game"]
-        )
-
-        processed_game["is_team_home"] = self.get_is_team_home(
-            game_record["game_location"]
-        )
-        processed_game["is_overtime"] = self.get_is_overtime(
-            sport, game_record["overtimes"]
-        )
-
-        # getting team and opponent information
-        processed_game["league_name"] = self.get_league_from_sport(sport)
-        processed_game["season"] = self.get_season_string(season)
-        processed_game["team_name"] = self.get_team_from_abbreviation(sport, team)
-        processed_game["opponent_name"] = game_record["opp_name"]
-
-        (
-            processed_game["team_points"],
-            processed_game["opponent_points"],
-        ) = self.get_point_fields(sport, game_record)
-
-        uuid_component_time = int(
-            datetime.combine(
-                processed_game["game_date"], datetime.min.time()
-            ).timestamp()
-        )
-        uuid_component_points = (
-            processed_game["team_points"] + processed_game["opponent_points"]
-        )
-
-        processed_game["game_uuid"] = f"{uuid_component_time}-{uuid_component_points}"
-
-        return processed_game
-
-    def _process(self, sport, team, season):
-        raw_data = self.get_raw(sport, team, season)
-        processed_games = self.process_games(raw_data)
-
-        return processed_games
 
     def get_raw_crawl_result(self, team_id, season):
 
@@ -269,7 +173,6 @@ class ScheduleProcessor:
         connection.close()
         cursor.close()
 
-
     def write_processed_games(self, processed_games):
         logging.warning(
             f"Writing processed games, expected row count: {len(processed_games)}"
@@ -279,6 +182,7 @@ class ScheduleProcessor:
 
         self.write_games_to_db(processed_games)
 
+
 if __name__ == "__main__":
 
     start_time = datetime.now()
@@ -286,7 +190,9 @@ if __name__ == "__main__":
 
     schedule_processor = ScheduleProcessor()
 
-    schedule_processor._seeder.get_seasons(base_year=config.BASE_YEAR, years_back=config.YEARS_BACK)
+    schedule_processor._seeder.get_seasons(
+        base_year=config.BASE_YEAR, years_back=config.YEARS_BACK
+    )
     schedule_processor._seeder.construct_mappings()
 
     master_processed_games = []
@@ -296,7 +202,9 @@ if __name__ == "__main__":
             logging.warning(f"---> Started {team_id}.{season}")
 
             try:
-                master_processed_games.extend(schedule_processor.process(team_id, season))
+                master_processed_games.extend(
+                    schedule_processor.process(team_id, season)
+                )
             except Exception as e:
                 logging.warning(f"FAILED TO PROCESS, ERROR {e}")
                 pass

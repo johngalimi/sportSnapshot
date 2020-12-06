@@ -87,6 +87,7 @@ DROP TABLE IF EXISTS tblGameRaw;
 CREATE TABLE tblGameRaw (
     id serial PRIMARY KEY,
     game_date DATE NOT NULL,
+    game_season INT NOT NULL,
     team_id INT NOT NULL,
     opponent_id INT NOT NULL,
     team_points INT NOT NULL,
