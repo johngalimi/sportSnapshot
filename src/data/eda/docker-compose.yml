@@ -1,0 +1,12 @@
+# docker compose up
+# docker exec -it <container_id> bash
+
+version: "3"
+services:
+  datascience-notebook:
+    image: jupyter/datascience-notebook
+    volumes:
+      - ./:/home/jovyan/work
+    ports:
+      - 8888:8888
+    container_name: datascience-notebook-container
