@@ -50,6 +50,9 @@ INSERT INTO tblTeam (league_id, team_abbr, team_location, team_name) VALUES
     (1, 'PHO', 'Phoenix', 'Suns'),
     (1, 'MIN', 'Minnesota', 'Timberwolves'),
     (1, 'GSW', 'Golden State', 'Warriors'),
+    (1, 'CHA', 'Charlotte', 'Bobcats'),
+    (1, 'NOH', 'New Orleans', 'Hornets'),
+    (1, 'NJN', 'New Jersey', 'Nets'),
     (2, 'BOS', 'Boston', 'Bruins'),
     (2, 'TBL', 'Tampa Bay', 'Lightning'),
     (2, 'TOR', 'Toronto', 'Maple Leafs'),
@@ -80,7 +83,9 @@ INSERT INTO tblTeam (league_id, team_abbr, team_location, team_name) VALUES
     (2, 'ARI', 'Arizona', 'Coyotes'),
     (2, 'ANA', 'Anaheim', 'Ducks'),
     (2, 'LAK', 'Los Angeles', 'Kings'),
-    (2, 'SJS', 'San Jose', 'Sharks')
+    (2, 'SJS', 'San Jose', 'Sharks'),
+    (2, 'PHX', 'Phoenix', 'Coyotes'),
+    (2, 'ATL', 'Atlanta', 'Thrashers')
 ;
 
 DROP TABLE IF EXISTS tblGameRaw;
