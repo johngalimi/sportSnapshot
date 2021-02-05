@@ -29,6 +29,7 @@ nhl_points AS (
         season_records.league_abbr = 'NHL'
 )
 
+-- TODO: cut by conference / division and add tiebreaker (OTW) in ranking calculation
 SELECT 
     nhl_points.game_season,
     nhl_points.team_abbr,
