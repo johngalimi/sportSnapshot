@@ -75,6 +75,8 @@ if __name__ == "__main__":
 
     schedule_crawler = ScheduleCrawler()
 
+    schedule_crawler._seeder.bootstrap_db()
+
     schedule_crawler._seeder.get_seasons(base_year=BASE_YEAR, years_back=YEARS_BACK)
     schedule_crawler._seeder.construct_mappings()
 
