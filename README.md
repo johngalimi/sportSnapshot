@@ -15,4 +15,8 @@ docker run -it sportsnapshot
 # optional terminal (if you want to copy raw crawl results to host)
 docker container list
 docker cp <container_id>:/code/results .
+
+# user interface
+docker build -f ui.Dockerfile .\src\ui\ -t sportsui
+docker kill $(docker ps -q --filter ancestor=sportsui); docker run --rm -p 3000:3000 sportsui
 ```
