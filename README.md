@@ -16,6 +16,10 @@ docker run -it sportsnapshot
 docker container list
 docker cp <container_id>:/code/results .
 
+# server
+docker build -f service.Dockerfile . -t sportsservice
+docker run --rm -p 5000:5000 sportsservice
+
 # user interface
 docker build -f ui.Dockerfile .\src\ui\ -t sportsui
 docker kill $(docker ps -q --filter ancestor=sportsui); docker run --rm -p 3000:3000 sportsui
