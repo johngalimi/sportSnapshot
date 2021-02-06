@@ -47,10 +47,8 @@ def rankings():
             SUM(CASE WHEN game.team_points < game.opponent_points AND game.is_overtime IS FALSE THEN 1 ELSE 0 END) losses,
             SUM(CASE WHEN game.team_points < game.opponent_points AND game.is_overtime IS TRUE THEN 1 ELSE 0 END) ot_losses
         FROM tblGameRaw game
-        INNER JOIN tblTeam team
-            ON game.team_id = team.id
-        INNER JOIN tblLeague league
-            ON team.league_id = league.id
+        INNER JOIN tblTeam team ON game.team_id = team.id
+        INNER JOIN tblLeague league ON team.league_id = league.id
         WHERE league.league_abbr = '{league}' 
             AND team.team_abbr = '{team}' 
             AND game.game_season = '{season}' 
