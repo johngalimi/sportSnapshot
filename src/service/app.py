@@ -35,23 +35,24 @@ def index():
 @app.route("/performance")
 def rankings():
 
-    league, team, season = (
+    league, season = (
         request.args.get("league"),
-        request.args.get("team"),
         request.args.get("season"),
     )
 
     query = f"""
         SELECT
+            CONCAT(team.team_location, ' ', team.team_name) as team,
             SUM(CASE WHEN game.team_points > game.opponent_points THEN 1 ELSE 0 END) wins,
             SUM(CASE WHEN game.team_points < game.opponent_points AND game.is_overtime IS FALSE THEN 1 ELSE 0 END) losses,
             SUM(CASE WHEN game.team_points < game.opponent_points AND game.is_overtime IS TRUE THEN 1 ELSE 0 END) ot_losses
         FROM tblGameRaw game
         INNER JOIN tblTeam team ON game.team_id = team.id
         INNER JOIN tblLeague league ON team.league_id = league.id
-        WHERE league.league_abbr = '{league}' 
-            AND team.team_abbr = '{team}' 
-            AND game.game_season = '{season}' 
+        WHERE league.league_abbr = '{league}'
+            AND game.game_season = '{season}'
+        GROUP BY team
+        ORDER BY wins DESC
     """
 
     query_result = execute_query(query)
