@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import { seasonData } from "./mockData.js";
 
 import range from "underscore/modules/range.js";
+
+import wretch from "wretch";
 
 import "antd/dist/antd.css";
 import { Layout, Table, Select, Space, Tooltip, Button, Card } from "antd";
@@ -43,12 +45,26 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [league, setLeague] = useState(null);
   const [season, setSeason] = useState(null);
-  const [tableData, setTableData] = useState(seasonData);
+  const [tableData, setTableData] = useState(null);
 
   useEffect(() => {
     if (league && season) {
       setIsSearchDisabled(false);
     }
+  });
+
+  const getSeasonData = useCallback(() => {
+    setIsLoading(true);
+
+    wretch(
+      `http://localhost:5000/performance?league=${league}&season=${season}`
+    )
+      .get()
+      .json((json) => {
+        setTableData(json);
+      });
+
+    setIsLoading(false);
   });
 
   return (
@@ -88,6 +104,7 @@ const App = () => {
               icon={<SearchOutlined />}
               disabled={isSearchDisabled}
               loading={isLoading}
+              onClick={getSeasonData}
             />
           </Tooltip>
         </Space>
@@ -96,15 +113,14 @@ const App = () => {
         {tableData ? (
           <Table
             columns={seasonColumns}
-            // dataSource={seasonData}
             dataSource={tableData}
             rowKey="team"
             size="middle"
             pagination={{ pageSize: 12 }}
           />
         ) : (
-          <Card title="No filters selected">
-            <p>Please select a league and season to continue</p>
+          <Card title="Getting Started">
+            <p>Select a league and season and hit search!</p>
           </Card>
         )}
       </Content>
