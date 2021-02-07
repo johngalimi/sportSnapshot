@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 
-import { seasonData } from "./mockData.js";
-
 import range from "underscore/modules/range.js";
 
 import wretch from "wretch";
