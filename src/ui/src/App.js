@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 
+import { gameData } from "./mockData.js";
+
 import range from "underscore/modules/range.js";
 
 import wretch from "wretch";
@@ -45,6 +47,12 @@ const tableColumns = [
     key: "ot_losses",
     width: 50,
   },
+  {
+    title: "OTL",
+    dataIndex: "ot_losses",
+    key: "ot_losses",
+    width: 50,
+  },
 ];
 
 const drawerColumns = [
@@ -82,7 +90,8 @@ const App = () => {
   const [season, setSeason] = useState(null);
   const [tableData, setTableData] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(true);
-  const [drawerData, setDrawerData] = useState(null);
+  // const [drawerData, setDrawerData] = useState(null);
+  const [drawerData, setDrawerData] = useState(gameData);
 
   useEffect(() => {
     if (league && season) {
@@ -99,6 +108,13 @@ const App = () => {
       .get()
       .json((json) => {
         setTableData(json);
+        // add button using cols array: https://stackoverflow.com/questions/64119052/adding-button-inside-ant-design-table-column
+        // setTableData(
+        //   json.map((el) => ({
+        //     ...el,
+        //     render: () => <button>hello</button>,
+        //   }))
+        // );
       });
 
     setIsLoading(false);
@@ -184,7 +200,12 @@ const App = () => {
             <p>Select a league and season and hit search!</p>
           </Card>
         )}
-        <Drawer visible={isDrawerVisible} closable={true} width={640}>
+        <Drawer
+          width={640}
+          visible={isDrawerVisible}
+          closable={true}
+          onClose={() => setIsDrawerVisible(false)}
+        >
           <Table
             columns={drawerColumns}
             dataSource={drawerData}

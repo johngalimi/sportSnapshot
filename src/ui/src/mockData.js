@@ -1,3 +1,21 @@
+export const gameData = [
+  {
+    date: "1/2/2010",
+    opponent: "Detroit Red Wings",
+    team_points: 4,
+    opponent_points: 3,
+    is_home: true,
+  },
+
+  {
+    date: "4/17/2019",
+    opponent: "Minnesota Wild",
+    team_points: 2,
+    opponent_points: 3,
+    is_home: false,
+  },
+];
+
 export const seasonData = [
   {
     losses: 23,
