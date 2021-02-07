@@ -35,7 +35,7 @@ def index():
 
 
 @app.route("/performance")
-def rankings():
+def performance():
 
     league, season = (
         request.args.get("league"),

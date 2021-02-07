@@ -5,13 +5,22 @@ import range from "underscore/modules/range.js";
 import wretch from "wretch";
 
 import "antd/dist/antd.css";
-import { Layout, Table, Select, Space, Tooltip, Button, Card } from "antd";
+import {
+  Layout,
+  Table,
+  Select,
+  Space,
+  Tooltip,
+  Button,
+  Card,
+  Drawer,
+} from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
 const { Header, Footer, Content } = Layout;
 const { Option } = Select;
 
-const seasonColumns = [
+const tableColumns = [
   {
     title: "Team",
     dataIndex: "team",
@@ -38,12 +47,42 @@ const seasonColumns = [
   },
 ];
 
+const drawerColumns = [
+  {
+    title: "Date",
+    dataIndex: "date",
+    key: "date",
+  },
+  {
+    title: "Opponent",
+    dataIndex: "opponent",
+    key: "opponent",
+  },
+  {
+    title: "",
+    dataIndex: "is_home",
+    key: "is_home",
+  },
+  {
+    title: "PF",
+    dataIndex: "team_points",
+    key: "team_points",
+  },
+  {
+    title: "PA",
+    dataIndex: "opponent_points",
+    key: "opponent_points",
+  },
+];
+
 const App = () => {
   const [isSearchDisabled, setIsSearchDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [league, setLeague] = useState(null);
   const [season, setSeason] = useState(null);
   const [tableData, setTableData] = useState(null);
+  const [isDrawerVisible, setIsDrawerVisible] = useState(true);
+  const [drawerData, setDrawerData] = useState(null);
 
   useEffect(() => {
     if (league && season) {
@@ -51,7 +90,7 @@ const App = () => {
     }
   });
 
-  const getSeasonData = useCallback(() => {
+  const getTableData = useCallback(() => {
     setIsLoading(true);
 
     wretch(
@@ -61,6 +100,30 @@ const App = () => {
       .json((json) => {
         setTableData(json);
       });
+
+    setIsLoading(false);
+  });
+
+  const getDrawerData = useCallback(() => {
+    setIsLoading(true);
+
+    // wretch(
+    //   `http://localhost:5000/performance?league=${league}&season=${season}`
+    // )
+    //   .get()
+    //   .json((json) => {
+    //     setTableData(json);
+    //   });
+
+    setDrawerData([
+      {
+        date: "1/2/2010",
+        opponent: "Detroit Red Wings",
+        team_points: 4,
+        opponent_points: 3,
+        is_home: true,
+      },
+    ]);
 
     setIsLoading(false);
   });
@@ -102,7 +165,7 @@ const App = () => {
               icon={<SearchOutlined />}
               disabled={isSearchDisabled}
               loading={isLoading}
-              onClick={getSeasonData}
+              onClick={getTableData}
             />
           </Tooltip>
         </Space>
@@ -110,7 +173,7 @@ const App = () => {
       <Content>
         {tableData ? (
           <Table
-            columns={seasonColumns}
+            columns={tableColumns}
             dataSource={tableData}
             rowKey="team"
             size="middle"
@@ -121,6 +184,15 @@ const App = () => {
             <p>Select a league and season and hit search!</p>
           </Card>
         )}
+        <Drawer visible={isDrawerVisible} closable={true} width={640}>
+          <Table
+            columns={drawerColumns}
+            dataSource={drawerData}
+            rowKey="team"
+            size="middle"
+            pagination={{ pageSize: 12 }}
+          />
+        </Drawer>
       </Content>
       <Footer></Footer>
     </Layout>
