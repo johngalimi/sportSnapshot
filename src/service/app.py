@@ -52,9 +52,42 @@ def performance():
         INNER JOIN tblTeam team ON game.team_id = team.id
         INNER JOIN tblLeague league ON team.league_id = league.id
         WHERE league.league_abbr = '{league}'
-            AND game.game_season = '{season}'
+            AND game.game_season = {season}
         GROUP BY team
         ORDER BY wins DESC
+    """
+
+    query_result = execute_query(query)
+
+    return jsonify(query_result)
+
+
+@app.route("/games")
+def games():
+
+    league, season, team = (
+        request.args.get("league"),
+        request.args.get("season"),
+        request.args.get("team"),
+    )
+
+    query = f"""
+        SELECT
+            CAST(game.game_date AS DATE) AS game_date,
+            CONCAT(opponent.team_location, ' ', opponent.team_name) AS opponent,
+            game.team_points,
+            game.opponent_points
+        FROM tblGameRaw game
+        INNER JOIN tblTeam team
+            ON game.team_id = team.id
+        INNER JOIN tblTeam opponent
+            ON game.opponent_id = opponent.id
+        INNER JOIN tblLeague league
+            ON team.league_id = league.id
+        WHERE league.league_abbr = '{league}'
+            AND game.game_season = {season}
+            AND team.team_abbr = '{team}'
+        ORDER BY game.game_date
     """
 
     query_result = execute_query(query)

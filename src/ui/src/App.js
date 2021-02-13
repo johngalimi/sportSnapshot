@@ -22,76 +22,15 @@ import { SearchOutlined } from "@ant-design/icons";
 const { Header, Footer, Content } = Layout;
 const { Option } = Select;
 
-const tableColumns = [
-  {
-    title: "Team",
-    dataIndex: "team",
-    key: "team",
-    width: 200,
-  },
-  {
-    title: "W",
-    dataIndex: "wins",
-    key: "wins",
-    width: 50,
-  },
-  {
-    title: "L",
-    dataIndex: "losses",
-    key: "losses",
-    width: 50,
-  },
-  {
-    title: "OTL",
-    dataIndex: "ot_losses",
-    key: "ot_losses",
-    width: 50,
-  },
-  {
-    title: "OTL",
-    dataIndex: "ot_losses",
-    key: "ot_losses",
-    width: 50,
-  },
-];
-
-const drawerColumns = [
-  {
-    title: "Date",
-    dataIndex: "date",
-    key: "date",
-  },
-  {
-    title: "Opponent",
-    dataIndex: "opponent",
-    key: "opponent",
-  },
-  {
-    title: "",
-    dataIndex: "is_home",
-    key: "is_home",
-  },
-  {
-    title: "PF",
-    dataIndex: "team_points",
-    key: "team_points",
-  },
-  {
-    title: "PA",
-    dataIndex: "opponent_points",
-    key: "opponent_points",
-  },
-];
-
 const App = () => {
   const [isSearchDisabled, setIsSearchDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [league, setLeague] = useState(null);
   const [season, setSeason] = useState(null);
+  const [team, setTeam] = useState(null);
   const [tableData, setTableData] = useState(null);
-  const [isDrawerVisible, setIsDrawerVisible] = useState(true);
-  // const [drawerData, setDrawerData] = useState(null);
-  const [drawerData, setDrawerData] = useState(gameData);
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const [drawerData, setDrawerData] = useState(null);
 
   useEffect(() => {
     if (league && season) {
@@ -108,41 +47,131 @@ const App = () => {
       .get()
       .json((json) => {
         setTableData(json);
-        // add button using cols array: https://stackoverflow.com/questions/64119052/adding-button-inside-ant-design-table-column
-        // setTableData(
-        //   json.map((el) => ({
-        //     ...el,
-        //     render: () => <button>hello</button>,
-        //   }))
-        // );
       });
 
     setIsLoading(false);
   });
 
-  const getDrawerData = useCallback(() => {
+  // const getDrawerData = useCallback(() => {
+  //   setIsDrawerVisible(true);
+  //   setIsLoading(true);
+
+  //   wretch(
+  //     `http://localhost:5000/games?league=${league}&season=${season}&team=${team}`
+  //   )
+  //     .get()
+  //     .json((json) => {
+  //       setDrawerData(json);
+  //     });
+
+  //   // setDrawerData([
+  //   //   {
+  //   //     date: "1/2/2010",
+  //   //     opponent: "Detroit Red Wings",
+  //   //     team_points: 4,
+  //   //     opponent_points: 3,
+  //   //     is_home: true,
+  //   //   },
+  //   // ]);
+
+  //   setIsLoading(false);
+  // });
+
+  const getDrawerData = (text, record) => {
+    console.log(text, record);
+    setIsDrawerVisible(true);
     setIsLoading(true);
 
-    // wretch(
-    //   `http://localhost:5000/performance?league=${league}&season=${season}`
-    // )
-    //   .get()
-    //   .json((json) => {
-    //     setTableData(json);
-    //   });
+    wretch(
+      `http://localhost:5000/games?league=${league}&season=${season}&team=${team}`
+    )
+      .get()
+      .json((json) => {
+        setDrawerData(json);
+      });
 
-    setDrawerData([
-      {
-        date: "1/2/2010",
-        opponent: "Detroit Red Wings",
-        team_points: 4,
-        opponent_points: 3,
-        is_home: true,
-      },
-    ]);
+    // setDrawerData([
+    //   {
+    //     date: "1/2/2010",
+    //     opponent: "Detroit Red Wings",
+    //     team_points: 4,
+    //     opponent_points: 3,
+    //     is_home: true,
+    //   },
+    // ]);
 
     setIsLoading(false);
-  });
+  };
+
+  const tableColumns = [
+    {
+      title: "Team",
+      dataIndex: "team",
+      key: "team",
+      width: 200,
+    },
+    {
+      title: "W",
+      dataIndex: "wins",
+      key: "wins",
+      width: 50,
+    },
+    {
+      title: "L",
+      dataIndex: "losses",
+      key: "losses",
+      width: 50,
+    },
+    {
+      title: "OTL",
+      dataIndex: "ot_losses",
+      key: "ot_losses",
+      width: 50,
+    },
+    {
+      title: "OTL",
+      dataIndex: "ot_losses",
+      key: "ot_losses",
+      width: 50,
+    },
+    {
+      title: "Games",
+      key: "games",
+      dataIndex: "games",
+      render: (text, record) => (
+        // <button onClick={() => getDrawerData(text, record)}>Games</button>
+        <button onClick={() => console.log(text, record)}>games</button>
+      ),
+    },
+  ];
+
+  const drawerColumns = [
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+    },
+    {
+      title: "Opponent",
+      dataIndex: "opponent",
+      key: "opponent",
+    },
+    // {
+    //   title: "",
+    //   dataIndex: "is_home",
+    //   key: "is_home",
+    // },
+    {
+      title: "PF",
+      dataIndex: "team_points",
+      key: "team_points",
+    },
+    {
+      title: "PA",
+      dataIndex: "opponent_points",
+      key: "opponent_points",
+    },
+  ];
 
   return (
     <Layout>
