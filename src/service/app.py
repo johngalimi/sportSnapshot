@@ -44,6 +44,7 @@ def performance():
 
     query = f"""
         SELECT
+            team.team_abbr,
             CONCAT(team.team_location, ' ', team.team_name) as team,
             SUM(CASE WHEN game.team_points > game.opponent_points THEN 1 ELSE 0 END) wins,
             SUM(CASE WHEN game.team_points < game.opponent_points AND game.is_overtime IS FALSE THEN 1 ELSE 0 END) losses,
@@ -53,7 +54,7 @@ def performance():
         INNER JOIN tblLeague league ON team.league_id = league.id
         WHERE league.league_abbr = '{league}'
             AND game.game_season = {season}
-        GROUP BY team
+        GROUP BY team.team_abbr, team
         ORDER BY wins DESC
     """
 
@@ -73,8 +74,9 @@ def games():
 
     query = f"""
         SELECT
-            CAST(game.game_date AS DATE) AS game_date,
+            CAST(game.game_date AS TEXT) AS game_date,
             CONCAT(opponent.team_location, ' ', opponent.team_name) AS opponent,
+            game.is_team_home,
             game.team_points,
             game.opponent_points
         FROM tblGameRaw game

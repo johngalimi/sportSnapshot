@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 
-import { gameData } from "./mockData.js";
-
 import range from "underscore/modules/range.js";
 
 import wretch from "wretch";
@@ -16,6 +14,7 @@ import {
   Button,
   Card,
   Drawer,
+  Tag,
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
@@ -52,34 +51,8 @@ const App = () => {
     setIsLoading(false);
   });
 
-  // const getDrawerData = useCallback(() => {
-  //   setIsDrawerVisible(true);
-  //   setIsLoading(true);
-
-  //   wretch(
-  //     `http://localhost:5000/games?league=${league}&season=${season}&team=${team}`
-  //   )
-  //     .get()
-  //     .json((json) => {
-  //       setDrawerData(json);
-  //     });
-
-  //   // setDrawerData([
-  //   //   {
-  //   //     date: "1/2/2010",
-  //   //     opponent: "Detroit Red Wings",
-  //   //     team_points: 4,
-  //   //     opponent_points: 3,
-  //   //     is_home: true,
-  //   //   },
-  //   // ]);
-
-  //   setIsLoading(false);
-  // });
-
-  const getDrawerData = (text, record) => {
-    console.log(text, record);
-    setIsDrawerVisible(true);
+  const getDrawerData = (team) => {
+    setTeam(team);
     setIsLoading(true);
 
     wretch(
@@ -90,17 +63,8 @@ const App = () => {
         setDrawerData(json);
       });
 
-    // setDrawerData([
-    //   {
-    //     date: "1/2/2010",
-    //     opponent: "Detroit Red Wings",
-    //     team_points: 4,
-    //     opponent_points: 3,
-    //     is_home: true,
-    //   },
-    // ]);
-
     setIsLoading(false);
+    setIsDrawerVisible(true);
   };
 
   const tableColumns = [
@@ -129,18 +93,11 @@ const App = () => {
       width: 50,
     },
     {
-      title: "OTL",
-      dataIndex: "ot_losses",
-      key: "ot_losses",
-      width: 50,
-    },
-    {
       title: "Games",
       key: "games",
       dataIndex: "games",
-      render: (text, record) => (
-        // <button onClick={() => getDrawerData(text, record)}>Games</button>
-        <button onClick={() => console.log(text, record)}>games</button>
+      render: (_, record) => (
+        <button onClick={() => getDrawerData(record.team_abbr)}>explore</button>
       ),
     },
   ];
@@ -148,19 +105,24 @@ const App = () => {
   const drawerColumns = [
     {
       title: "Date",
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "game_date",
+      key: "game_date",
+    },
+    {
+      title: "",
+      dataIndex: "is_team_home",
+      key: "is_team_home",
+      render: (_, record) => (
+        <Tag color={!record.is_team_home && "red"}>
+          {record.is_team_home ? "home" : "away"}
+        </Tag>
+      ),
     },
     {
       title: "Opponent",
       dataIndex: "opponent",
       key: "opponent",
     },
-    // {
-    //   title: "",
-    //   dataIndex: "is_home",
-    //   key: "is_home",
-    // },
     {
       title: "PF",
       dataIndex: "team_points",
@@ -240,7 +202,6 @@ const App = () => {
             dataSource={drawerData}
             rowKey="team"
             size="middle"
-            pagination={{ pageSize: 12 }}
           />
         </Drawer>
       </Content>
