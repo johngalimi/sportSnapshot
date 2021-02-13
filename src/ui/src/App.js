@@ -15,21 +15,51 @@ import {
   Card,
   Drawer,
   Tag,
+  Modal,
+  Typography,
 } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Line } from "@ant-design/charts";
+import { SearchOutlined, RightOutlined, RiseOutlined } from "@ant-design/icons";
 
 const { Header, Footer, Content } = Layout;
 const { Option } = Select;
+const { Text } = Typography;
+
+const data = [
+  { season: "2010", wins: 3 },
+  { season: "2011", wins: 4 },
+  { season: "2012", wins: 3.5 },
+  { season: "2013", wins: 5 },
+  { season: "2014", wins: 4.9 },
+  { season: "2015", wins: 6 },
+  { season: "2016", wins: 7 },
+  { season: "2017", winse: 9 },
+];
+const config = {
+  data,
+  height: 400,
+  xField: "season",
+  yField: "wins",
+  point: {
+    size: 5,
+    shape: "diamond",
+  },
+  label: {
+    style: {
+      fill: "#aaa",
+    },
+  },
+};
 
 const App = () => {
   const [isSearchDisabled, setIsSearchDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [league, setLeague] = useState(null);
   const [season, setSeason] = useState(null);
-  const [team, setTeam] = useState(null);
   const [tableData, setTableData] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [drawerData, setDrawerData] = useState(null);
+  const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
 
   useEffect(() => {
     if (league && season) {
@@ -52,7 +82,6 @@ const App = () => {
   });
 
   const getDrawerData = (team) => {
-    setTeam(team);
     setIsLoading(true);
 
     wretch(
@@ -67,37 +96,75 @@ const App = () => {
     setIsDrawerVisible(true);
   };
 
+  const handleModalClose = () => setIsGraphModalOpen(false);
+
+  const getHistoricalTeamPerformance = (team) => {
+    setIsLoading(true);
+
+    console.log(team);
+
+    setIsGraphModalOpen(true);
+
+    setIsLoading(false);
+  };
+
   const tableColumns = [
     {
       title: "Team",
       dataIndex: "team",
       key: "team",
-      width: 200,
+      align: "left",
+      width: 250,
+      render: (text, record) => (
+        <Space>
+          <Tooltip
+            title="historical performance"
+            placement="bottomRight"
+            arrowPointAtCenter
+          >
+            <Button
+              size="small"
+              shape="round"
+              icon={<RiseOutlined />}
+              onClick={() => getHistoricalTeamPerformance(record.team_abbr)}
+            />
+          </Tooltip>
+          <Text strong>{text}</Text>
+        </Space>
+      ),
     },
     {
       title: "W",
       dataIndex: "wins",
       key: "wins",
-      width: 50,
+      align: "center",
     },
     {
       title: "L",
       dataIndex: "losses",
       key: "losses",
-      width: 50,
+      align: "center",
     },
     {
       title: "OTL",
       dataIndex: "ot_losses",
       key: "ot_losses",
-      width: 50,
+      align: "center",
     },
     {
       title: "Games",
       key: "games",
       dataIndex: "games",
       render: (_, record) => (
-        <button onClick={() => getDrawerData(record.team_abbr)}>explore</button>
+        <Button
+          type="primary"
+          size="small"
+          shape="round"
+          icon={<RightOutlined />}
+          onClick={() => getDrawerData(record.team_abbr)}
+        >
+          view
+        </Button>
       ),
     },
   ];
@@ -204,6 +271,14 @@ const App = () => {
             size="middle"
           />
         </Drawer>
+        <Modal
+          visible={isGraphModalOpen}
+          footer={null}
+          width={1000}
+          onCancel={handleModalClose}
+        >
+          <Line {...config} />
+        </Modal>
       </Content>
       <Footer></Footer>
     </Layout>
