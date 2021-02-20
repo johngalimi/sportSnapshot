@@ -34,8 +34,8 @@ def index():
     return jsonify({"app": "Sports Snapshot Service"})
 
 
-@app.route("/performance")
-def performance():
+@app.route("/league_performance")
+def league_performance():
 
     league, season = (
         request.args.get("league"),
@@ -56,6 +56,36 @@ def performance():
             AND game.game_season = {season}
         GROUP BY team.team_abbr, team
         ORDER BY wins DESC
+    """
+
+    query_result = execute_query(query)
+
+    return jsonify(query_result)
+
+
+@app.route("/team_performance")
+def team_performance():
+
+    league, team, season = (
+        request.args.get("league"),
+        request.args.get("team"),
+        request.args.get("season"),
+    )
+
+    query = f"""
+        SELECT
+            CONCAT(game.game_season - 1, '-', game.game_season - 2000) AS season,
+            SUM(CASE WHEN game.team_points > game.opponent_points THEN 1 ELSE 0 END) wins,
+            SUM(CASE WHEN game.team_points < game.opponent_points AND game.is_overtime IS FALSE THEN 1 ELSE 0 END) losses,
+            SUM(CASE WHEN game.team_points < game.opponent_points AND game.is_overtime IS TRUE THEN 1 ELSE 0 END) ot_losses
+        FROM tblGameRaw game
+        INNER JOIN tblTeam team ON game.team_id = team.id
+        INNER JOIN tblLeague league ON team.league_id = league.id
+        WHERE league.league_abbr = '{league}'
+            AND team.team_abbr = '{team}'
+            AND game.game_season < {season}
+        GROUP BY game.game_season, CONCAT(game.game_season - 1, '-', game.game_season - 2000)
+        ORDER BY game.game_season DESC
     """
 
     query_result = execute_query(query)

@@ -17,39 +17,36 @@ import {
   Tag,
   Modal,
   Typography,
+  List,
+  Avatar,
 } from "antd";
-import { Line } from "@ant-design/charts";
-import { SearchOutlined, RightOutlined, RiseOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  RightOutlined,
+  RiseOutlined,
+  SignalFilled,
+} from "@ant-design/icons";
 
 const { Header, Footer, Content } = Layout;
 const { Option } = Select;
 const { Text } = Typography;
 
-const data = [
-  { season: "2010", wins: 3 },
-  { season: "2011", wins: 4 },
-  { season: "2012", wins: 3.5 },
-  { season: "2013", wins: 5 },
-  { season: "2014", wins: 4.9 },
-  { season: "2015", wins: 6 },
-  { season: "2016", wins: 7 },
-  { season: "2017", winse: 9 },
-];
-const config = {
-  data,
-  height: 400,
-  xField: "season",
-  yField: "wins",
-  point: {
-    size: 5,
-    shape: "diamond",
-  },
-  label: {
-    style: {
-      fill: "#aaa",
-    },
-  },
-};
+window.document.title = "SportSnapshot";
+
+// const historicalPerformanceData = [
+//   {
+//     season: "2018-19",
+//     wins: 10,
+//     losses: 5,
+//     ot_losses: 2,
+//   },
+//   {
+//     season: "2017-18",
+//     wins: 9,
+//     losses: 7,
+//     ot_losses: 4,
+//   },
+// ];
 
 const App = () => {
   const [isSearchDisabled, setIsSearchDisabled] = useState(true);
@@ -59,7 +56,13 @@ const App = () => {
   const [tableData, setTableData] = useState(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [drawerData, setDrawerData] = useState(null);
-  const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
+  const [
+    isHistoricalPerformanceModalOpen,
+    setIsHistoricalPerformanceModalOpen,
+  ] = useState(false);
+  const [historicalPerformanceData, setHistoricalPerformanceData] = useState(
+    []
+  );
 
   useEffect(() => {
     if (league && season) {
@@ -71,7 +74,7 @@ const App = () => {
     setIsLoading(true);
 
     wretch(
-      `http://localhost:5000/performance?league=${league}&season=${season}`
+      `http://localhost:5000/league_performance?league=${league}&season=${season}`
     )
       .get()
       .json((json) => {
@@ -96,14 +99,20 @@ const App = () => {
     setIsDrawerVisible(true);
   };
 
-  const handleModalClose = () => setIsGraphModalOpen(false);
+  const handleModalClose = () => setIsHistoricalPerformanceModalOpen(false);
 
   const getHistoricalTeamPerformance = (team) => {
     setIsLoading(true);
 
-    console.log(team);
+    wretch(
+      `http://localhost:5000/team_performance?league=${league}&season=${season}&team=${team}`
+    )
+      .get()
+      .json((json) => {
+        setHistoricalPerformanceData(json);
+      });
 
-    setIsGraphModalOpen(true);
+    setIsHistoricalPerformanceModalOpen(true);
 
     setIsLoading(false);
   };
@@ -254,8 +263,10 @@ const App = () => {
             pagination={{ pageSize: 12 }}
           />
         ) : (
-          <Card title="Getting Started">
-            <p>Select a league and season and hit search!</p>
+          <Card title="SportSnapshot">
+            <Card type="inner" title="Getting Started">
+              Select a league + season and hit search!
+            </Card>
           </Card>
         )}
         <Drawer
@@ -272,12 +283,24 @@ const App = () => {
           />
         </Drawer>
         <Modal
-          visible={isGraphModalOpen}
+          visible={isHistoricalPerformanceModalOpen}
           footer={null}
-          width={1000}
+          width={500}
           onCancel={handleModalClose}
         >
-          <Line {...config} />
+          <List
+            itemLayout="horizontal"
+            dataSource={historicalPerformanceData}
+            renderItem={(item) => (
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<Avatar icon={<SignalFilled />} />}
+                  title={item.season}
+                  description={`${item.wins}-${item.losses}-${item.ot_losses}`}
+                />
+              </List.Item>
+            )}
+          />
         </Modal>
       </Content>
       <Footer></Footer>
