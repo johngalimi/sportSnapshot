@@ -31,22 +31,9 @@ const { Header, Footer, Content } = Layout;
 const { Option } = Select;
 const { Text } = Typography;
 
-window.document.title = "SportSnapshot";
+const APP_NAME = "SportSnapshot";
 
-// const historicalPerformanceData = [
-//   {
-//     season: "2018-19",
-//     wins: 10,
-//     losses: 5,
-//     ot_losses: 2,
-//   },
-//   {
-//     season: "2017-18",
-//     wins: 9,
-//     losses: 7,
-//     ot_losses: 4,
-//   },
-// ];
+window.document.title = APP_NAME;
 
 const App = () => {
   const [isSearchDisabled, setIsSearchDisabled] = useState(true);
@@ -263,7 +250,7 @@ const App = () => {
             pagination={{ pageSize: 12 }}
           />
         ) : (
-          <Card title="SportSnapshot">
+          <Card title={APP_NAME}>
             <Card type="inner" title="Getting Started">
               Select a league + season and hit search!
             </Card>
