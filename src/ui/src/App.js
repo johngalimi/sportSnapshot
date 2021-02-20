@@ -272,7 +272,7 @@ const App = () => {
         <Modal
           visible={isHistoricalPerformanceModalOpen}
           footer={null}
-          width={500}
+          width={300}
           onCancel={handleModalClose}
         >
           <List
