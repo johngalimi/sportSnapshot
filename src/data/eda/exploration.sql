@@ -77,7 +77,8 @@ latest_bos_nhl_games AS (
     INNER JOIN tblLeague league ON team.league_id = league.id
     INNER JOIN game_locations locations ON game.id = locations.game_id
     WHERE league.id = 2 --only have NHL arenas
-        AND team.team_abbr = 'BOS' AND game.game_season = 2019
+        AND team.team_abbr = 'BOS' 
+        AND game.game_season = 2019
 )
 
 SELECT * FROM latest_bos_nhl_games
