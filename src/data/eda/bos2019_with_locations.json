@@ -1,0 +1,740 @@
+[
+ {
+  "game_date": "2018-10-03",
+  "team_abbr": "BOS",
+  "opponent_abbr": "WSH",
+  "team_points": "0",
+  "opponent_points": "7",
+  "game_lat": "38.89806",
+  "game_lon": "-77.02083"
+ },
+ {
+  "game_date": "2018-10-04",
+  "team_abbr": "BOS",
+  "opponent_abbr": "BUF",
+  "team_points": "4",
+  "opponent_points": "0",
+  "game_lat": "42.875",
+  "game_lon": "-78.87639"
+ },
+ {
+  "game_date": "2018-10-08",
+  "team_abbr": "BOS",
+  "opponent_abbr": "OTT",
+  "team_points": "6",
+  "opponent_points": "3",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-10-11",
+  "team_abbr": "BOS",
+  "opponent_abbr": "EDM",
+  "team_points": "4",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-10-13",
+  "team_abbr": "BOS",
+  "opponent_abbr": "DET",
+  "team_points": "8",
+  "opponent_points": "2",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-10-17",
+  "team_abbr": "BOS",
+  "opponent_abbr": "CGY",
+  "team_points": "2",
+  "opponent_points": "5",
+  "game_lat": "51.0375",
+  "game_lon": "-114.05194"
+ },
+ {
+  "game_date": "2018-10-18",
+  "team_abbr": "BOS",
+  "opponent_abbr": "EDM",
+  "team_points": "2",
+  "opponent_points": "3",
+  "game_lat": "53.57139",
+  "game_lon": "-113.45611"
+ },
+ {
+  "game_date": "2018-10-20",
+  "team_abbr": "BOS",
+  "opponent_abbr": "VAN",
+  "team_points": "1",
+  "opponent_points": "2",
+  "game_lat": "49.27778",
+  "game_lon": "-123.10889"
+ },
+ {
+  "game_date": "2018-10-23",
+  "team_abbr": "BOS",
+  "opponent_abbr": "OTT",
+  "team_points": "4",
+  "opponent_points": "1",
+  "game_lat": "45.29694",
+  "game_lon": "-75.92722"
+ },
+ {
+  "game_date": "2018-10-25",
+  "team_abbr": "BOS",
+  "opponent_abbr": "PHI",
+  "team_points": "3",
+  "opponent_points": "0",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-10-27",
+  "team_abbr": "BOS",
+  "opponent_abbr": "MTL",
+  "team_points": "0",
+  "opponent_points": "3",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-10-30",
+  "team_abbr": "BOS",
+  "opponent_abbr": "CAR",
+  "team_points": "3",
+  "opponent_points": "2",
+  "game_lat": "35.80333",
+  "game_lon": "-78.72194"
+ },
+ {
+  "game_date": "2018-11-03",
+  "team_abbr": "BOS",
+  "opponent_abbr": "NSH",
+  "team_points": "0",
+  "opponent_points": "1",
+  "game_lat": "36.15917",
+  "game_lon": "-86.77861"
+ },
+ {
+  "game_date": "2018-11-05",
+  "team_abbr": "BOS",
+  "opponent_abbr": "DAL",
+  "team_points": "2",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-11-08",
+  "team_abbr": "BOS",
+  "opponent_abbr": "VAN",
+  "team_points": "5",
+  "opponent_points": "8",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-11-10",
+  "team_abbr": "BOS",
+  "opponent_abbr": "TOR",
+  "team_points": "5",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-11-11",
+  "team_abbr": "BOS",
+  "opponent_abbr": "VEG",
+  "team_points": "4",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-11-14",
+  "team_abbr": "BOS",
+  "opponent_abbr": "COL",
+  "team_points": "3",
+  "opponent_points": "6",
+  "game_lat": "39.74861",
+  "game_lon": "-105.0075"
+ },
+ {
+  "game_date": "2018-11-16",
+  "team_abbr": "BOS",
+  "opponent_abbr": "DAL",
+  "team_points": "0",
+  "opponent_points": "1",
+  "game_lat": "32.79056",
+  "game_lon": "-96.81028"
+ },
+ {
+  "game_date": "2018-11-17",
+  "team_abbr": "BOS",
+  "opponent_abbr": "ARI",
+  "team_points": "2",
+  "opponent_points": "1",
+  "game_lat": "33.53194",
+  "game_lon": "-112.26111"
+ },
+ {
+  "game_date": "2018-11-21",
+  "team_abbr": "BOS",
+  "opponent_abbr": "DET",
+  "team_points": "2",
+  "opponent_points": "3",
+  "game_lat": "42.32528",
+  "game_lon": "-83.05139"
+ },
+ {
+  "game_date": "2018-11-23",
+  "team_abbr": "BOS",
+  "opponent_abbr": "PIT",
+  "team_points": "2",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-11-24",
+  "team_abbr": "BOS",
+  "opponent_abbr": "MTL",
+  "team_points": "3",
+  "opponent_points": "2",
+  "game_lat": "45.49611",
+  "game_lon": "-73.56944"
+ },
+ {
+  "game_date": "2018-11-26",
+  "team_abbr": "BOS",
+  "opponent_abbr": "TOR",
+  "team_points": "2",
+  "opponent_points": "4",
+  "game_lat": "43.64333",
+  "game_lon": "-79.37917"
+ },
+ {
+  "game_date": "2018-11-29",
+  "team_abbr": "BOS",
+  "opponent_abbr": "NYI",
+  "team_points": "2",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-12-01",
+  "team_abbr": "BOS",
+  "opponent_abbr": "DET",
+  "team_points": "2",
+  "opponent_points": "4",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-12-04",
+  "team_abbr": "BOS",
+  "opponent_abbr": "FLA",
+  "team_points": "0",
+  "opponent_points": "5",
+  "game_lat": "26.15833",
+  "game_lon": "-80.32556"
+ },
+ {
+  "game_date": "2018-12-06",
+  "team_abbr": "BOS",
+  "opponent_abbr": "TBL",
+  "team_points": "2",
+  "opponent_points": "3",
+  "game_lat": "27.942742",
+  "game_lon": "-82.4539604"
+ },
+ {
+  "game_date": "2018-12-08",
+  "team_abbr": "BOS",
+  "opponent_abbr": "TOR",
+  "team_points": "6",
+  "opponent_points": "3",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-12-09",
+  "team_abbr": "BOS",
+  "opponent_abbr": "OTT",
+  "team_points": "2",
+  "opponent_points": "1",
+  "game_lat": "45.29694",
+  "game_lon": "-75.92722"
+ },
+ {
+  "game_date": "2018-12-11",
+  "team_abbr": "BOS",
+  "opponent_abbr": "ARI",
+  "team_points": "4",
+  "opponent_points": "3",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-12-14",
+  "team_abbr": "BOS",
+  "opponent_abbr": "PIT",
+  "team_points": "3",
+  "opponent_points": "5",
+  "game_lat": "40.43944",
+  "game_lon": "-79.98917"
+ },
+ {
+  "game_date": "2018-12-16",
+  "team_abbr": "BOS",
+  "opponent_abbr": "BUF",
+  "team_points": "2",
+  "opponent_points": "4",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-12-17",
+  "team_abbr": "BOS",
+  "opponent_abbr": "MTL",
+  "team_points": "4",
+  "opponent_points": "0",
+  "game_lat": "45.49611",
+  "game_lon": "-73.56944"
+ },
+ {
+  "game_date": "2018-12-20",
+  "team_abbr": "BOS",
+  "opponent_abbr": "ANA",
+  "team_points": "3",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-12-22",
+  "team_abbr": "BOS",
+  "opponent_abbr": "NSH",
+  "team_points": "5",
+  "opponent_points": "2",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-12-23",
+  "team_abbr": "BOS",
+  "opponent_abbr": "CAR",
+  "team_points": "3",
+  "opponent_points": "5",
+  "game_lat": "35.80333",
+  "game_lon": "-78.72194"
+ },
+ {
+  "game_date": "2018-12-27",
+  "team_abbr": "BOS",
+  "opponent_abbr": "NJD",
+  "team_points": "2",
+  "opponent_points": "5",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2018-12-29",
+  "team_abbr": "BOS",
+  "opponent_abbr": "BUF",
+  "team_points": "3",
+  "opponent_points": "2",
+  "game_lat": "42.875",
+  "game_lon": "-78.87639"
+ },
+ {
+  "game_date": "2019-01-01",
+  "team_abbr": "BOS",
+  "opponent_abbr": "CHI",
+  "team_points": "4",
+  "opponent_points": "2",
+  "game_lat": "41.88056",
+  "game_lon": "-87.67417"
+ },
+ {
+  "game_date": "2019-01-03",
+  "team_abbr": "BOS",
+  "opponent_abbr": "CGY",
+  "team_points": "6",
+  "opponent_points": "4",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-01-05",
+  "team_abbr": "BOS",
+  "opponent_abbr": "BUF",
+  "team_points": "2",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-01-08",
+  "team_abbr": "BOS",
+  "opponent_abbr": "MIN",
+  "team_points": "4",
+  "opponent_points": "0",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-01-10",
+  "team_abbr": "BOS",
+  "opponent_abbr": "WSH",
+  "team_points": "2",
+  "opponent_points": "4",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-01-12",
+  "team_abbr": "BOS",
+  "opponent_abbr": "TOR",
+  "team_points": "3",
+  "opponent_points": "2",
+  "game_lat": "43.64333",
+  "game_lon": "-79.37917"
+ },
+ {
+  "game_date": "2019-01-14",
+  "team_abbr": "BOS",
+  "opponent_abbr": "MTL",
+  "team_points": "2",
+  "opponent_points": "3",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-01-16",
+  "team_abbr": "BOS",
+  "opponent_abbr": "PHI",
+  "team_points": "3",
+  "opponent_points": "4",
+  "game_lat": "39.90111",
+  "game_lon": "-71.0622278"
+ },
+ {
+  "game_date": "2019-01-17",
+  "team_abbr": "BOS",
+  "opponent_abbr": "STL",
+  "team_points": "5",
+  "opponent_points": "2",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-01-19",
+  "team_abbr": "BOS",
+  "opponent_abbr": "NYR",
+  "team_points": "2",
+  "opponent_points": "3",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-01-29",
+  "team_abbr": "BOS",
+  "opponent_abbr": "WPG",
+  "team_points": "3",
+  "opponent_points": "4",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-01-31",
+  "team_abbr": "BOS",
+  "opponent_abbr": "PHI",
+  "team_points": "2",
+  "opponent_points": "3",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-02-03",
+  "team_abbr": "BOS",
+  "opponent_abbr": "WSH",
+  "team_points": "1",
+  "opponent_points": "0",
+  "game_lat": "38.89806",
+  "game_lon": "-77.02083"
+ },
+ {
+  "game_date": "2019-02-05",
+  "team_abbr": "BOS",
+  "opponent_abbr": "NYI",
+  "team_points": "3",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-02-06",
+  "team_abbr": "BOS",
+  "opponent_abbr": "NYR",
+  "team_points": "3",
+  "opponent_points": "4",
+  "game_lat": "40.75056",
+  "game_lon": "-73.99361"
+ },
+ {
+  "game_date": "2019-02-09",
+  "team_abbr": "BOS",
+  "opponent_abbr": "LAK",
+  "team_points": "5",
+  "opponent_points": "4",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-02-10",
+  "team_abbr": "BOS",
+  "opponent_abbr": "COL",
+  "team_points": "2",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-02-12",
+  "team_abbr": "BOS",
+  "opponent_abbr": "CHI",
+  "team_points": "6",
+  "opponent_points": "3",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-02-15",
+  "team_abbr": "BOS",
+  "opponent_abbr": "ANA",
+  "team_points": "3",
+  "opponent_points": "0",
+  "game_lat": "33.80778",
+  "game_lon": "-117.87667"
+ },
+ {
+  "game_date": "2019-02-16",
+  "team_abbr": "BOS",
+  "opponent_abbr": "LAK",
+  "team_points": "4",
+  "opponent_points": "2",
+  "game_lat": "34.04306",
+  "game_lon": "-118.26722"
+ },
+ {
+  "game_date": "2019-02-18",
+  "team_abbr": "BOS",
+  "opponent_abbr": "SJS",
+  "team_points": "6",
+  "opponent_points": "5",
+  "game_lat": "37.33278",
+  "game_lon": "-121.90111"
+ },
+ {
+  "game_date": "2019-02-20",
+  "team_abbr": "BOS",
+  "opponent_abbr": "VEG",
+  "team_points": "3",
+  "opponent_points": "2",
+  "game_lat": "36.102881",
+  "game_lon": "-115.1806157"
+ },
+ {
+  "game_date": "2019-02-23",
+  "team_abbr": "BOS",
+  "opponent_abbr": "STL",
+  "team_points": "1",
+  "opponent_points": "2",
+  "game_lat": "38.62667",
+  "game_lon": "-90.2025"
+ },
+ {
+  "game_date": "2019-02-26",
+  "team_abbr": "BOS",
+  "opponent_abbr": "SJS",
+  "team_points": "4",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-02-28",
+  "team_abbr": "BOS",
+  "opponent_abbr": "TBL",
+  "team_points": "4",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-03-02",
+  "team_abbr": "BOS",
+  "opponent_abbr": "NJD",
+  "team_points": "1",
+  "opponent_points": "0",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-03-05",
+  "team_abbr": "BOS",
+  "opponent_abbr": "CAR",
+  "team_points": "4",
+  "opponent_points": "3",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-03-07",
+  "team_abbr": "BOS",
+  "opponent_abbr": "FLA",
+  "team_points": "4",
+  "opponent_points": "3",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-03-09",
+  "team_abbr": "BOS",
+  "opponent_abbr": "OTT",
+  "team_points": "3",
+  "opponent_points": "2",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-03-10",
+  "team_abbr": "BOS",
+  "opponent_abbr": "PIT",
+  "team_points": "2",
+  "opponent_points": "4",
+  "game_lat": "40.43944",
+  "game_lon": "-79.98917"
+ },
+ {
+  "game_date": "2019-03-12",
+  "team_abbr": "BOS",
+  "opponent_abbr": "CBJ",
+  "team_points": "4",
+  "opponent_points": "7",
+  "game_lat": "39.9692833",
+  "game_lon": "-83.0061111"
+ },
+ {
+  "game_date": "2019-03-14",
+  "team_abbr": "BOS",
+  "opponent_abbr": "WPG",
+  "team_points": "3",
+  "opponent_points": "4",
+  "game_lat": "49.89278",
+  "game_lon": "-97.14361"
+ },
+ {
+  "game_date": "2019-03-16",
+  "team_abbr": "BOS",
+  "opponent_abbr": "CBJ",
+  "team_points": "2",
+  "opponent_points": "1",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-03-19",
+  "team_abbr": "BOS",
+  "opponent_abbr": "NYI",
+  "team_points": "5",
+  "opponent_points": "0",
+  "game_lat": "40.72278",
+  "game_lon": "-73.59056"
+ },
+ {
+  "game_date": "2019-03-21",
+  "team_abbr": "BOS",
+  "opponent_abbr": "NJD",
+  "team_points": "5",
+  "opponent_points": "1",
+  "game_lat": "40.73361",
+  "game_lon": "-74.17111"
+ },
+ {
+  "game_date": "2019-03-23",
+  "team_abbr": "BOS",
+  "opponent_abbr": "FLA",
+  "team_points": "7",
+  "opponent_points": "3",
+  "game_lat": "26.15833",
+  "game_lon": "-80.32556"
+ },
+ {
+  "game_date": "2019-03-25",
+  "team_abbr": "BOS",
+  "opponent_abbr": "TBL",
+  "team_points": "4",
+  "opponent_points": "5",
+  "game_lat": "27.942742",
+  "game_lon": "-82.4539604"
+ },
+ {
+  "game_date": "2019-03-27",
+  "team_abbr": "BOS",
+  "opponent_abbr": "NYR",
+  "team_points": "6",
+  "opponent_points": "3",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-03-30",
+  "team_abbr": "BOS",
+  "opponent_abbr": "FLA",
+  "team_points": "1",
+  "opponent_points": "4",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ },
+ {
+  "game_date": "2019-03-31",
+  "team_abbr": "BOS",
+  "opponent_abbr": "DET",
+  "team_points": "3",
+  "opponent_points": "6",
+  "game_lat": "42.32528",
+  "game_lon": "-83.05139"
+ },
+ {
+  "game_date": "2019-04-02",
+  "team_abbr": "BOS",
+  "opponent_abbr": "CBJ",
+  "team_points": "6",
+  "opponent_points": "2",
+  "game_lat": "39.9692833",
+  "game_lon": "-83.0061111"
+ },
+ {
+  "game_date": "2019-04-04",
+  "team_abbr": "BOS",
+  "opponent_abbr": "MIN",
+  "team_points": "3",
+  "opponent_points": "0",
+  "game_lat": "44.94472",
+  "game_lon": "-93.10111"
+ },
+ {
+  "game_date": "2019-04-06",
+  "team_abbr": "BOS",
+  "opponent_abbr": "TBL",
+  "team_points": "3",
+  "opponent_points": "6",
+  "game_lat": "42.3662019",
+  "game_lon": "-71.0643293"
+ }
+]
