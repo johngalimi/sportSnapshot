@@ -55,6 +55,9 @@ class PlayerCrawler(BaseCrawler):
 
         return player_season_data
 
+    def process(self, raw_df):
+        print(raw_df.head())
+
 
 if __name__ == "__main__":
 
@@ -66,6 +69,7 @@ if __name__ == "__main__":
         "alex_ovechkin": "o/ovechal01",
         "patrick_kane": "k/kanepa01",
         "drew_doughty": "d/doughdr01",
+        "jack_hughes": "h/hugheja03",
     }
 
     player_crawler = PlayerCrawler()
@@ -73,11 +77,12 @@ if __name__ == "__main__":
     all_players: List[Dict] = []
 
     for player_name, player_code in PLAYER_CODES.items():
-        print("******************", player_name)
-        player_result = player_crawler.crawl(player_code)
 
+        player_result = player_crawler.crawl(player_code)
         all_players.extend(player_result)
 
-    player_df = pd.DataFrame(all_players)
+    raw_player_df = pd.DataFrame(all_players)
 
-    print(player_df.tail())
+    raw_player_df.to_csv("eda/raw_player_df.csv", index=False)
+
+    processed_player_df = player_crawler.process(raw_player_df)
